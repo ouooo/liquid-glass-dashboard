@@ -1,0 +1,24 @@
+{
+  "name": "Liquid Glass Dashboard",
+  "version": "1.0.0",
+  "description": "Liquid Glass 风格 NAS 监控仪表盘",
+  "ports": {
+    "web": 28080,
+    "api": 28090
+  },
+  "services": {
+    "emby": {
+      "host": "http://<NAS-IP>:16880",
+      "api_key": "<your-emby-api-key>"
+    },
+    "qbittorrent": {
+      "host": "http://<NAS-IP>:16058",
+      "username": "<username>",
+      "password": "<password>"
+    },
+    "moviepilot": {
+      "host": "http://<NAS-IP>:16995",
+      "db_path": "/volume1/docker/mp/config/user.db"
+    }
+  }
+}
