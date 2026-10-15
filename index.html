@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -10,15 +10,2226 @@
     color: #f0f0f4; min-height:100vh; overflow:hidden;
     -webkit-font-smoothing: antialiased;
   }
-  .bg-layer { position:fixed; inset:0; z-index:0; background: center center / cover no-repeat; filter: brightness(0.55) saturate(1.15); transition: opacity 2s ease-in-out; }
+
+  /* ===== 背景层 ===== */
+  .bg-layer {
+    position:fixed; inset:0; z-index:0;
+    background: center center / cover no-repeat;
+    filter: brightness(0.55) saturate(1.15);
+    transition: opacity 2s ease-in-out;
+  }
   .bg-layer.next { opacity:0; }
   .bg-layer.active { opacity:1; }
-  .bg-overlay { position:fixed; inset:0; z-index:1; background: linear-gradient(180deg, rgba(12,14,20,0.2) 0%, rgba(12,14,20,0.3) 50%, rgba(10,12,18,0.5) 100%); }
-  .layout { position:relative; z-index:2; display:flex; height:100vh; }
-  .sidebar { width:220px; flex-shrink:0; padding:24px 14px; background: linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 60%, rgba(255,255,255,0.05) 100%); backdrop-filter: blur(30px) saturate(1.6); -webkit-backdrop-filter: blur(30px) saturate(1.6); border-right: 1px solid rgba(255,255,255,0.14); display:flex; flex-direction:column; }
+  .bg-overlay {
+    position:fixed; inset:0; z-index:1;
+    background: linear-gradient(180deg,
+      rgba(12,14,20,0.2) 0%,
+      rgba(12,14,20,0.3) 50%,
+      rgba(10,12,18,0.5) 100%);
+  }
+
+  /* ===== 整体布局 ===== */
+  .layout {
+    position:relative; z-index:2;
+    display:flex; height:100vh;
+  }
+
+  /* ===== 左侧固定侧边栏 ===== */
+  .sidebar {
+    width:220px; flex-shrink:0;
+    padding:24px 14px;
+    background:
+      linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 60%, rgba(255,255,255,0.05) 100%);
+    backdrop-filter: blur(30px) saturate(1.6);
+    -webkit-backdrop-filter: blur(30px) saturate(1.6);
+    border-right: 1px solid rgba(255,255,255,0.14);
+    display:flex; flex-direction:column;
+  }
+  .sidebar .logo {
+    display:flex; align-items:center; gap:10px;
+    padding:0 10px 24px;
+  }
+  .sidebar .logo-icon {
+    width:38px; height:38px; border-radius:11px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:17px; color:#fff;
+    box-shadow: 0 4px 12px rgba(34,197,94,0.3);
+  }
+  .sidebar .logo-text { font-size:15px; font-weight:800; letter-spacing:-0.01em; }
+  .sidebar .logo-sub { font-size:10px; color:rgba(255,255,255,0.4); margin-top:2px; letter-spacing:0.06em; }
+
+  .sidebar nav { flex:1; display:flex; flex-direction:column; gap:3px; margin-bottom:20px; }
+  .sidebar nav a {
+    display:flex; align-items:center; gap:10px;
+    padding:11px 12px; border-radius:10px;
+    color:rgba(255,255,255,0.55); text-decoration:none; font-size:13.5px;
+    transition: all 0.2s; position:relative; cursor:pointer;
+  }
+  .sidebar nav a:hover { background:rgba(255,255,255,0.06); color:#fff; }
+  .sidebar nav a.active {
+    background:rgba(255,255,255,0.1); color:#fff;
+  }
+  .sidebar nav a.active::before {
+    content:''; position:absolute; left:0; width:3px; height:20px;
+    background:#22c55e; border-radius:0 3px 3px 0;
+  }
+  .sidebar nav a .icon { font-size:16px; width:20px; text-align:center; opacity:0.8; }
+
+  .sidebar .sys-card {
+    background:rgba(255,255,255,0.06); border-radius:14px;
+    padding:16px; margin-top:auto;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .sidebar .sys-card .status-row {
+    display:flex; align-items:center; gap:8px; margin-bottom:8px;
+  }
+  .sidebar .sys-card .dot { width:8px; height:8px; border-radius:50%; background:#22c55e; box-shadow:0 0 8px rgba(34,197,94,0.5); }
+  .sidebar .sys-card .status-text { font-size:12px; color:rgba(255,255,255,0.85); }
+  .sidebar .sys-card .devices { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:12px; }
+  .sidebar .sys-card .uptime-label { font-size:10px; color:rgba(255,255,255,0.35); letter-spacing:0.06em; margin-bottom:4px; text-transform:uppercase; }
+  .sidebar .sys-card .uptime-value { font-size:15px; font-weight:700; }
+
+  .sidebar .footer {
+    padding:14px 10px 0; font-size:10px; color:rgba(255,255,255,0.3);
+  }
+
+  /* ===== 右侧内容区 ===== */
+  .main {
+    flex:1; padding:24px 32px;
+    overflow-y:auto; height:100vh;
+  }
+
+  /* 顶部行 */
+  .top-row {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:20px; gap:16px;
+  }
+  .breadcrumb { font-size:12.5px; color:rgba(255,255,255,0.45); }
+  .breadcrumb .sep { margin:0 8px; opacity:0.5; }
+  .breadcrumb .current { color:rgba(255,255,255,0.85); }
+
+  .top-right { display:flex; align-items:center; gap:12px; }
+
+  /* 搜索框 + 下拉 */
+  .search-container { position:relative; }
+  .search-box {
+    display:flex; align-items:center; gap:0;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(20px) saturate(1.5);
+    -webkit-backdrop-filter:blur(20px) saturate(1.5);
+    border:1px solid rgba(255,255,255,0.2); border-radius:999px;
+    height:42px; width:360px;
+    transition: all 0.2s; overflow:hidden;
+  }
+  .search-box:focus-within {
+    border-color: rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.16);
+  }
+  .search-switch {
+    width:42px; height:100%; display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.08); cursor:pointer;
+    border-right:1px solid rgba(255,255,255,0.1);
+    transition: all 0.2s;
+  }
+  .search-switch:hover { background:rgba(255,255,255,0.14); }
+  .search-switch .icon { font-size:15px; color:rgba(255,255,255,0.65); }
+  .search-box input {
+    flex:1; background:transparent; border:none; outline:none;
+    color:#fff; font-size:13.5px; padding:0 16px;
+  }
+  .search-box input::placeholder { color:rgba(255,255,255,0.4); }
+
+  /* 搜索下拉菜单 */
+  .search-dropdown {
+    position:absolute; top:calc(100% + 8px); left:0; z-index:100;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+    backdrop-filter: blur(30px) saturate(1.6);
+    -webkit-backdrop-filter: blur(30px) saturate(1.6);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:14px; padding:8px;
+    min-width:200px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    display:none;
+  }
+  .search-dropdown.show { display:block; }
+  .search-dropdown-item {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-radius:10px;
+    cursor:pointer; transition: background 0.15s;
+    font-size:13px; color:rgba(255,255,255,0.8);
+  }
+  .search-dropdown-item:hover { background:rgba(255,255,255,0.1); color:#fff; }
+  .search-dropdown-item.active { background:rgba(255,255,255,0.12); color:#fff; }
+  .search-dropdown-item .icon { font-size:16px; }
+
+  .status-badge {
+    display:flex; align-items:center; gap:6px;
+    background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3);
+    padding:7px 14px; border-radius:999px;
+    font-size:10.5px; font-weight:600; color:#4ade80; letter-spacing:0.06em;
+    backdrop-filter: blur(10px);
+  }
+  .status-badge .dot { width:6px; height:6px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,0.6); }
+
+  /* 页面标题 */
+  .page-title { margin-bottom:24px; }
+  .page-title h1 { font-size:36px; font-weight:800; margin-bottom:6px; letter-spacing:-0.02em; }
+  .page-title p { font-size:14px; color:rgba(255,255,255,0.5); }
+
+  /* ===== iOS 26 玻璃卡片 ===== */
+  .glass-card {
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 40%, rgba(255,255,255,0.06) 100%);
+    backdrop-filter: blur(28px) saturate(1.6);
+    -webkit-backdrop-filter: blur(28px) saturate(1.6);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.3),
+      inset 0 -1px 0 rgba(255,255,255,0.05);
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .glass-card:hover {
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.13) 40%, rgba(255,255,255,0.08) 100%);
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  /* ===== Hero 轮播卡片 ===== */
+  .hero-media {
+    display:flex; gap:0; margin-bottom:28px; overflow:hidden;
+    padding:0 !important;
+    aspect-ratio: 16 / 6.2;
+  }
+  .hero-media-left {
+    flex:0 0 40%; padding:32px; display:flex; flex-direction:column; justify-content:space-between;
+    background:
+      linear-gradient(160deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.08) 100%);
+    backdrop-filter: blur(20px);
+  }
+  .hero-media-tag {
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:10.5px; font-weight:600; color:#4ade80;
+    letter-spacing:0.1em; margin-bottom:16px;
+    text-transform: uppercase;
+  }
+  .hero-media-tag .dot { width:6px; height:6px; border-radius:50%; background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,0.6); }
+  .hero-media h2 { font-size:28px; font-weight:800; margin-bottom:12px; line-height:1.2; letter-spacing:-0.01em; }
+  .hero-media .meta { font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:24px; }
+  .hero-media .actions { display:flex; gap:16px; align-items:center; }
+  .btn-primary {
+    background:#fff; color:#0a0a0c; padding:11px 22px; border-radius:12px;
+    font-size:13.5px; font-weight:600; border:none; cursor:pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(255,255,255,0.15);
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,255,255,0.25); }
+  .btn-link { font-size:13.5px; color:rgba(255,255,255,0.65); text-decoration:none; cursor:pointer; }
+  .btn-link:hover { color:#fff; }
+
+  .hero-media-right { flex:1; position:relative; overflow:hidden; }
+  .hero-poster {
+    position:absolute; inset:0;
+    background-size:cover; background-position:center;
+    transition: opacity 2s ease-in-out;
+  }
+  .hero-poster.next { opacity:0; }
+  .hero-poster.active { opacity:1; }
+
+  .recent-card {
+    position:absolute; top:50%; transform:translateY(-50%);
+    right:24px; z-index:2;
+    width:280px;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.1) 100%);
+    backdrop-filter: blur(32px) saturate(1.6);
+    -webkit-backdrop-filter: blur(32px) saturate(1.6);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:18px; padding:24px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    box-shadow:
+      0 16px 40px rgba(0,0,0,0.2),
+      inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .recent-top { display:flex; flex-direction:column; gap:12px; }
+  .recent-label {
+    font-size:11px; color:rgba(255,255,255,0.55);
+    letter-spacing:0.1em; text-transform:uppercase;
+    display:flex; align-items:center; gap:8px;
+  }
+  .recent-label::before {
+    content:''; width:20px; height:2px;
+    background:#22c55e; border-radius:1px;
+  }
+  .recent-title { font-size:20px; font-weight:700; line-height:1.3; color:#fff; }
+  .recent-meta { font-size:13px; color:rgba(255,255,255,0.65); display:flex; gap:10px; align-items:center; }
+  .recent-meta .year { color:rgba(255,255,255,0.5); }
+  .recent-meta .dot { width:4px; height:4px; background:rgba(255,255,255,0.35); border-radius:50%; }
+  .recent-bottom {
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:16px; margin-top:16px;
+    border-top:1px solid rgba(255,255,255,0.12);
+  }
+  .recent-library { font-size:12px; color:rgba(255,255,255,0.55); }
+  .recent-badge {
+    background:rgba(34,197,94,0.15); color:#22c55e;
+    font-size:11px; font-weight:500;
+    padding:4px 10px; border-radius:6px;
+  }
+
+  /* ===== Section 标题 ===== */
+  .section-title { margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .section-title h3 { font-size:18px; font-weight:700; }
+  .section-title .section-icon { font-size:18px; opacity:0.7; }
+  .section-title p { font-size:12.5px; color:rgba(255,255,255,0.45); margin-left:auto; }
+
+  /* ===== 系统状态 五卡片 ===== */
+  .health-grid {
+    display:grid; grid-template-columns: repeat(5, 1fr); gap:14px; margin-bottom:28px;
+  }
+  .health-card .card-top {
+    display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;
+  }
+  .health-card .label { font-size:12px; color:rgba(255,255,255,0.55); }
+  .health-card .status-dot {
+    width:8px; height:8px; border-radius:50%; background:#22c55e;
+    box-shadow:0 0 6px rgba(34,197,94,0.5);
+  }
+  .health-card .status-dot.warn { background:#f59e0b; box-shadow:0 0 6px rgba(245,158,11,0.5); }
+  .health-card .value { font-size:26px; font-weight:800; margin-bottom:6px; letter-spacing:-0.01em; }
+  .health-card .value-row {
+    display:flex; gap:12px; margin-bottom:6px;
+  }
+  .health-card .value-item { font-size:13px; color:rgba(255,255,255,0.7); }
+  .health-card .value-item .num { font-weight:700; color:#fff; }
+  .health-card .sub { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:16px; }
+  .progress-bar {
+    height:4px; border-radius:2px; background:rgba(255,255,255,0.08); overflow:hidden;
+  }
+  .progress-fill { height:100%; border-radius:2px; }
+  .progress-fill.blue { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .progress-fill.purple { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+  .progress-fill.green { background: linear-gradient(90deg, #22c55e, #4ade80); }
+  .progress-fill.orange { background: linear-gradient(90deg, #f97316, #fb923c); }
+  .progress-fill.cyan { background: linear-gradient(90deg, #06b6d4, #22d3ee); }
+
+  /* ===== 存储与性能 ===== */
+  .storage-grid {
+    display:grid; grid-template-columns: 1.4fr 1fr; gap:14px; margin-bottom:28px;
+  }
+  .card-header {
+    display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;
+  }
+  .card-header h4 { font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .card-header .h-icon { font-size:16px; opacity:0.7; }
+  .manage-link { font-size:12px; color:#4ade80; text-decoration:none; cursor:pointer; }
+  .storage-pool { margin-bottom:18px; }
+  .storage-pool:last-child { margin-bottom:0; }
+  .pool-label {
+    display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:8px;
+  }
+  .pool-label .name { color:rgba(255,255,255,0.85); font-weight:500; }
+  .pool-label .usage { color:rgba(255,255,255,0.45); }
+
+  .health-badge {
+    font-size:9.5px; font-weight:600; color:#4ade80;
+    background:rgba(34,197,94,0.15); padding:4px 10px; border-radius:999px;
+    letter-spacing:0.06em;
+  }
+  .device-row {
+    display:flex; align-items:center; gap:12px; padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .device-row:last-child { border-bottom:none; }
+  .device-icon {
+    width:28px; height:28px; border-radius:8px;
+    background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;
+    font-size:13px;
+  }
+  .device-info { flex:1; }
+  .device-info .name { font-size:13.5px; font-weight:600; margin-bottom:2px; }
+  .device-info .stats { font-size:11.5px; color:rgba(255,255,255,0.45); }
+  .device-temp { font-size:13px; color:rgba(255,255,255,0.65); font-weight:500; }
+
+  /* ===== 数据活动表格 ===== */
+  .download-card { margin-bottom:28px; }
+  .download-table { width:100%; }
+  .table-header {
+    display:grid; grid-template-columns: 1.8fr 0.8fr 0.6fr 1.2fr 1fr 0.8fr; gap:12px;
+    padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.08);
+    font-size:10.5px; font-weight:600; color:rgba(255,255,255,0.45);
+    letter-spacing:0.06em; text-transform:uppercase;
+  }
+  .table-row {
+    display:grid; grid-template-columns: 1.8fr 0.8fr 0.6fr 1.2fr 1fr 0.8fr; gap:12px;
+    padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+    align-items:center; transition: background 0.15s;
+  }
+  .table-row:hover { background:rgba(255,255,255,0.03); }
+  .table-row:last-child { border-bottom:none; }
+  .task-name { font-size:13.5px; font-weight:600; margin-bottom:2px; }
+  .task-sub { font-size:11.5px; color:rgba(255,255,255,0.4); }
+  .status-downloading { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#60a5fa; }
+  .status-seeding { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#4ade80; }
+  .status-paused { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#f59e0b; }
+  .status-dot { width:6px; height:6px; border-radius:50%; }
+  .status-downloading .status-dot { background:#3b82f6; }
+  .status-seeding .status-dot { background:#22c55e; }
+  .status-paused .status-dot { background:#f59e0b; }
+  .progress-cell { font-size:11.5px; color:rgba(255,255,255,0.55); }
+  .progress-cell .bar { margin-top:6px; }
+  .speed-row { display:flex; flex-direction:column; gap:2px; }
+  .speed-item { font-size:12px; color:rgba(255,255,255,0.7); }
+  .speed-item .arrow { font-size:10px; opacity:0.6; }
+  .peers { font-size:12.5px; color:rgba(255,255,255,0.5); }
+  .view-all { text-align:right; margin-top:14px; }
+  .view-all a { font-size:12.5px; color:#4ade80; text-decoration:none; cursor:pointer; }
+
+  /* 全局限速条 */
+  .global-limit-bar {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:16px; padding:12px 16px;
+    background:rgba(255,255,255,0.06); border-radius:12px;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .global-limit-left { display:flex; align-items:center; gap:10px; }
+  .global-limit-label { font-size:12px; color:rgba(255,255,255,0.6); }
+  .global-limit-value { font-size:13px; font-weight:700; color:#fff; }
+  .limit-toggle {
+    width:36px; height:20px; border-radius:10px;
+    background:#22c55e; position:relative; cursor:pointer;
+    transition: background 0.2s;
+  }
+  .limit-toggle::after {
+    content:''; position:absolute; top:2px; right:2px;
+    width:16px; height:16px; border-radius:50%; background:#fff;
+    transition: all 0.2s;
+  }
+  .limit-toggle.off { background:rgba(255,255,255,0.2); }
+  .limit-toggle.off::after { right:18px; }
+
+  /* ===== 媒体库与服务 ===== */
+  .library-grid {
+    display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+  }
+
+  /* ===== 搜索结果页 ===== */
+  .search-results-header {
+    display:flex; align-items:center; gap:12px; margin-bottom:20px;
+  }
+
+  /* ===== 最近入库列表 ===== */
+  .recent-list {
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:12px;
+  }
+  .recent-item {
+    display:flex; gap:12px; padding:10px;
+    background:rgba(255,255,255,0.04); border-radius:12px;
+    border:1px solid rgba(255,255,255,0.06);
+    transition:all 0.2s;
+  }
+  .recent-item:hover {
+    background:rgba(255,255,255,0.08);
+  }
+  .recent-poster {
+    width:48px; height:68px; border-radius:8px;
+    background:rgba(0,0,0,0.3); flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; overflow:hidden;
+  }
+  .recent-poster img {
+    width:100%; height:100%; object-fit:cover;
+  }
+  .recent-info {
+    flex:1; min-width:0;
+  }
+  .recent-title {
+    font-size:13px; font-weight:600; margin-bottom:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .recent-meta {
+    font-size:11px; color:rgba(255,255,255,0.5);
+    display:flex; gap:8px; margin-bottom:4px;
+  }
+  .recent-date {
+    font-size:11px; color:rgba(255,255,255,0.4);
+  }
+  .search-back {
+    width:36px; height:36px; border-radius:10px;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; transition:all 0.2s; font-size:16px;
+  }
+  .search-back:hover { background:rgba(255,255,255,0.15); }
+  .search-query {
+    font-size:22px; font-weight:700;
+  }
+  .search-source-tag {
+    padding:4px 12px; border-radius:20px; font-size:12px;
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15);
+  }
+  .search-results-count {
+    font-size:13px; color:rgba(255,255,255,0.5); margin-left:auto;
+  }
+
+  /* 影片结果卡片 */
+  .movie-grid {
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:16px;
+  }
+  .movie-card {
+    background:rgba(255,255,255,0.06); border-radius:14px; overflow:hidden;
+    border:1px solid rgba(255,255,255,0.08); transition:all 0.25s; cursor:pointer;
+  }
+  .movie-card:hover {
+    transform:translateY(-4px);
+    background:rgba(255,255,255,0.1);
+    box-shadow:0 12px 32px rgba(0,0,0,0.3);
+  }
+  .movie-poster {
+    width:100%; aspect-ratio:2/3; background:rgba(0,0,0,0.3);
+    display:flex; align-items:center; justify-content:center; font-size:40px;
+  }
+  .movie-poster img { width:100%; height:100%; object-fit:cover; }
+  .movie-info { padding:12px; }
+  .movie-title {
+    font-size:14px; font-weight:600; margin-bottom:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .movie-meta {
+    font-size:12px; color:rgba(255,255,255,0.5);
+    display:flex; gap:8px; align-items:center;
+  }
+  .movie-rating {
+    color:#fbbf24; font-weight:600;
+  }
+  .movie-status {
+    display:inline-block; padding:2px 8px; border-radius:6px;
+    font-size:11px; margin-top:6px;
+  }
+  .movie-status.available { background:rgba(34,197,94,0.2); color:#4ade80; }
+  .movie-status.downloading { background:rgba(59,130,246,0.2); color:#60a5fa; }
+
+  /* 种子资源结果 */
+  .torrent-list {
+    display:flex; flex-direction:column; gap:10px;
+  }
+  .torrent-item {
+    display:flex; align-items:center; gap:16px;
+    padding:14px 18px;
+    background:rgba(255,255,255,0.06); border-radius:12px;
+    border:1px solid rgba(255,255,255,0.08); transition:all 0.2s;
+  }
+  .torrent-item:hover { background:rgba(255,255,255,0.1); }
+  .torrent-icon {
+    width:40px; height:40px; border-radius:10px;
+    background:rgba(239,68,68,0.15); display:flex;
+    align-items:center; justify-content:center; font-size:18px;
+  }
+  .torrent-main { flex:1; min-width:0; }
+  .torrent-name {
+    font-size:14px; font-weight:500; margin-bottom:4px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .torrent-sub { font-size:12px; color:rgba(255,255,255,0.5); display:flex; gap:12px; }
+  .torrent-stats {
+    display:flex; gap:20px; font-size:13px; text-align:right;
+  }
+  .torrent-stat .num { font-weight:600; }
+  .torrent-stat .label { font-size:11px; color:rgba(255,255,255,0.4); }
+
+  .lib-stats {
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-bottom:16px;
+  }
+  .lib-stat {
+    background:rgba(255,255,255,0.06); border-radius:12px; padding:16px;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .lib-stat .num { font-size:24px; font-weight:800; margin-bottom:4px; }
+  .lib-stat .cat { font-size:11.5px; color:rgba(255,255,255,0.5); }
+  .lib-footer { font-size:11.5px; color:rgba(255,255,255,0.45); line-height:1.7; }
+  .lib-footer .check { color:#4ade80; }
+
+  /* 服务卡片 4列 */
+  .services-grid {
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;
+  }
+  .service-item {
+    display:flex; align-items:center; gap:10px;
+    padding:14px; background:rgba(255,255,255,0.06); border-radius:12px;
+    transition: background 0.15s; cursor:pointer;
+    border:1px solid rgba(255,255,255,0.06);
+  }
+  .service-item:hover { background:rgba(255,255,255,0.1); }
+  .service-icon {
+    width:32px; height:32px; border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; flex-shrink:0;
+  }
+  .service-info { flex:1; min-width:0; }
+  .service-name { font-size:13px; font-weight:600; margin-bottom:2px; }
+  .service-desc { font-size:10.5px; color:rgba(255,255,255,0.45); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .service-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .service-dot.on { background:#22c55e; box-shadow:0 0 6px rgba(34,197,94,0.5); }
+  .service-dot.warn { background:#f59e0b; }
+
+  /* ===== 底部状态栏 ===== */
+  .bottom-bar {
+    display:flex; justify-content:space-between; align-items:center;
+    margin-top:36px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.06);
+    font-size:11px; color:rgba(255,255,255,0.3);
+  }
+
+  /* ===== 页面切换 ===== */
+  .page { display:none; }
+  .page.active { display:block; }
+
+  /* ===== Storage 页面 ===== */
+  .alert-card-top {
+    background: linear-gradient(145deg, rgba(249,115,22,0.15) 0%, rgba(249,115,22,0.06) 100%);
+    border: 1px solid rgba(249,115,22,0.3);
+    border-radius: 18px; padding:18px 22px; margin-bottom:20px;
+    backdrop-filter: blur(20px);
+    display:flex; align-items:center; gap:12px;
+  }
+  .alert-card-top .alert-icon { font-size:20px; }
+  .alert-card-top .alert-title { font-size:14px; font-weight:700; color:#fb923c; margin-bottom:2px; }
+  .alert-card-top .alert-desc { font-size:12.5px; color:rgba(255,255,255,0.7); }
+
+  .pool-group { margin-bottom:24px; }
+  .pool-group-header {
+    display:flex; align-items:center; gap:10px; margin-bottom:12px;
+    padding:12px 16px; background:rgba(255,255,255,0.06); border-radius:12px;
+    border:1px solid rgba(255,255,255,0.08);
+  }
+  .pool-group-header .device-icon {
+    width:32px; height:32px; border-radius:8px;
+    background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;
+    font-size:15px;
+  }
+  .pool-group-header .device-name { font-size:14px; font-weight:700; }
+  .pool-group-header .device-sub { font-size:11px; color:rgba(255,255,255,0.45); margin-left:auto; }
+
+  .pool-card { padding:18px 22px; margin-bottom:10px; }
+  .pool-card:last-child { margin-bottom:0; }
+  .pool-card .pool-name { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .pool-card .pool-usage { font-size:12px; color:rgba(255,255,255,0.5); margin-bottom:12px; }
+
+  /* ===== Transfers 页面 ===== */
+  .transfers-list { display:flex; flex-direction:column; gap:0; }
+  .transfer-row {
+    display:grid; grid-template-columns: 2fr 0.8fr 0.6fr 1.2fr 1fr 0.8fr; gap:12px;
+    padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.06);
+    align-items:center;
+  }
+  .transfer-row:last-child { border-bottom:none; }
+
+  /* ===== Media 页面 ===== */
+  .task-status-bar {
+    background: linear-gradient(145deg, rgba(59,130,246,0.12) 0%, rgba(59,130,246,0.04) 100%);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 18px; padding:18px 22px; margin-bottom:20px;
+    backdrop-filter: blur(20px);
+    display:flex; align-items:center; gap:12px;
+  }
+  .task-status-bar .task-icon { font-size:20px; }
+  .task-status-bar .task-title { font-size:14px; font-weight:700; color:#60a5fa; margin-bottom:2px; }
+  .task-status-bar .task-desc { font-size:12.5px; color:rgba(255,255,255,0.7); }
+
+  .media-detail-grid {
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; margin-bottom:28px;
+  }
+  .media-detail-card { padding:22px; }
+  .media-detail-card .cat-icon { font-size:20px; margin-bottom:10px; }
+  .media-detail-card .cat-name { font-size:13px; color:rgba(255,255,255,0.55); margin-bottom:8px; }
+  .media-detail-card .cat-num { font-size:28px; font-weight:800; margin-bottom:4px; }
+  .media-detail-card .cat-sub { font-size:11px; color:rgba(255,255,255,0.4); }
+
+  .sub-category-list { margin-top:12px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.06); }
+  .sub-category-item {
+    display:flex; justify-content:space-between; font-size:12px;
+    padding:6px 0; color:rgba(255,255,255,0.6);
+  }
+  .sub-category-item .sub-num { color:#fff; font-weight:600; }
+
+  /* ===== Applications 页面 ===== */
+  .apps-grid {
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-bottom:28px;
+  }
+  .app-card { padding:18px 20px; display:flex; align-items:center; gap:12px; }
+  .app-icon {
+    width:40px; height:40px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:20px; flex-shrink:0;
+  }
+  .app-info { flex:1; }
+  .app-card .app-name { font-size:14px; font-weight:700; margin-bottom:2px; }
+  .app-card .app-desc { font-size:11.5px; color:rgba(255,255,255,0.5); }
+  .app-status { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; }
+  .app-status.on { color:#4ade80; }
+  .app-status.review { color:#fbbf24; }
+  .app-status .dot { width:7px; height:7px; border-radius:50%; }
+  .app-status.on .dot { background:#22c55e; }
+  .app-status.review .dot { background:#f59e0b; }
+
+  /* ===== Events 页面 ===== */
+  .events-list { display:flex; flex-direction:column; gap:0; }
+  .event-row {
+    display:grid; grid-template-columns: 100px 1fr 80px; gap:16px;
+    padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.05);
+    align-items:center; font-size:13px;
+  }
+  .event-row:last-child { border-bottom:none; }
+  .event-time { color:rgba(255,255,255,0.4); font-size:12px; }
+  .event-text { color:rgba(255,255,255,0.85); }
+  .event-tag {
+    font-size:10.5px; padding:3px 10px; border-radius:6px;
+    text-align:center; font-weight:600;
+  }
+  .event-tag.info { background:rgba(59,130,246,0.2); color:#60a5fa; }
+  .event-tag.success { background:rgba(34,197,94,0.2); color:#4ade80; }
+  .event-tag.warn { background:rgba(249,115,22,0.2); color:#fb923c; }
+
+  /* ===== 响应式自适应 ===== */
+  /* 平板 (768px - 1024px) */
+  @media (max-width: 1024px) {
+    .sidebar {
+      width: 200px;
+    }
+    .main-content {
+      margin-left: 200px;
+      padding: 20px;
+    }
+    .health-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .storage-performance {
+      grid-template-columns: 1fr;
+    }
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .carousel {
+      grid-template-columns: 1fr;
+    }
+    .carousel-info {
+      padding: 20px;
+    }
+  }
+
+  /* 手机横屏 / 小平板 (480px - 768px) */
+  @media (max-width: 768px) {
+    .sidebar {
+      width: 100%;
+      height: auto;
+      position: relative;
+      padding: 12px;
+    }
+    .sidebar-nav {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 8px;
+    }
+    .nav-link {
+      white-space: nowrap;
+      padding: 8px 12px;
+    }
+    .main-content {
+      margin-left: 0;
+      padding: 16px;
+    }
+    .top-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .search-box {
+      width: 100%;
+    }
+    .health-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .lib-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .library-grid {
+      grid-template-columns: 1fr;
+    }
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+    .movie-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    .recent-list {
+      grid-template-columns: 1fr;
+    }
+    .transfer-table {
+      font-size: 12px;
+    }
+    .carousel-card {
+      min-height: 300px;
+    }
+    h1 { font-size: 24px; }
+    h2 { font-size: 18px; }
+  }
+
+  /* 手机竖屏 (<480px) */
+  @media (max-width: 480px) {
+    .health-grid {
+      grid-template-columns: 1fr;
+    }
+    .lib-stats {
+      grid-template-columns: 1fr;
+    }
+    .top-right {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .search-container {
+      width: 100%;
+    }
+    .torrent-item {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .torrent-stats {
+      width: 100%;
+      justify-content: space-around;
+    }
+    .section-title h3 {
+      font-size: 16px;
+    }
+    .glass-card {
+      padding: 14px;
+    }
+  }
 </style>
 </head>
 <body>
-<p>placeholder - full version via NAS deploy</p>
+
+<div class="bg-layer active" id="bg1"></div>
+<div class="bg-layer next" id="bg2"></div>
+<div class="bg-overlay"></div>
+
+<div class="layout">
+
+  <!-- 左侧侧边栏 -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">N</div>
+      <div>
+        <div class="logo-text">NEXUS</div>
+        <div class="logo-sub">家庭服务器监测管理平台</div>
+      </div>
+    </div>
+
+    <nav>
+      <a class="nav-link active" data-page="overview"><span class="icon">🏠</span> 总览</a>
+      <a class="nav-link" data-page="applications"><span class="icon">🤵🏼‍♀️</span> 服务</a>
+      <a class="nav-link" data-page="media"><span class="icon">📽️</span> 媒体库</a>
+      <a class="nav-link" data-page="transfers"><span class="icon">⬇️</span> 数据活动</a>
+      <a class="nav-link" data-page="storage"><span class="icon">🗄️</span> 存储</a>
+      <a class="nav-link" data-page="scripts"><span class="icon">📝</span> 脚本</a>
+      <a class="nav-link" data-page="events"><span class="icon">📋</span> 活动日志</a>
+    </nav>
+
+    <div class="sys-card">
+      <div class="status-row">
+        <span class="dot"></span>
+        <span class="status-text">系统运行正常</span>
+      </div>
+      <div class="devices">SA6400 + DS220+</div>
+      <div class="uptime-label">运行时间</div>
+      <div class="uptime-value">28天14小时</div>
+    </div>
+
+    <div class="footer">v2.0.0 · 局域网</div>
+  </aside>
+
+  <!-- 右侧内容区 -->
+  <main class="main">
+
+    <div class="top-row">
+      <div class="breadcrumb">
+        总览 <span class="sep">/</span> <span class="current" id="crumbCurrent">仪表盘</span>
+      </div>
+
+      <div class="top-right">
+        <div class="search-container">
+          <div class="search-box">
+            <div class="search-switch" id="searchSwitch" title="切换搜索源">
+              <span class="icon" id="currentSearchIcon">🔍</span>
+            </div>
+            <input type="text" id="searchInput" placeholder="搜索 Bing..." onkeypress="handleSearch(event)">
+          </div>
+          <div class="search-dropdown" id="searchDropdown">
+            <div class="search-dropdown-item active" data-source="bing">
+              <span class="icon">🔍</span> Bing 搜索引擎
+            </div>
+            <div class="search-dropdown-item" data-source="emby">
+              <span class="icon">🎬</span> Emby 媒体库
+            </div>
+            <div class="search-dropdown-item" data-source="site">
+              <span class="icon">🌐</span> 站点资源
+            </div>
+          </div>
+        </div>
+        <div class="status-badge">
+          <span class="dot"></span> 系统运行正常
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 页面 1: 总览 Overview ========== -->
+    <div class="page active" id="page-overview">
+      <div class="page-title">
+        <h1 id="greeting">Good Morning.</h1>
+        <p>你的家庭服务器一览，一切运行正常。</p>
+      </div>
+
+      <!-- Hero 轮播卡片 -->
+      <div class="glass-card hero-media">
+        <div class="hero-media-left">
+          <div>
+            <div class="hero-media-tag"><span class="dot"></span> 媒体库更新中</div>
+            <h2 id="heroTitle">你的媒体，随时可播。</h2>
+            <div class="meta" id="heroMeta">4K 收藏 · 3,842 部电影 · 12 分钟前刚扫描</div>
+          </div>
+          <div class="actions">
+            <button class="btn-primary" onclick="switchPage('media')">查看详情</button>
+            <a class="btn-link" href="http://10.31.0.88:16880" target="_blank" style="cursor:pointer;">管理收藏 →</a>
+          </div>
+        </div>
+        <div class="hero-media-right">
+          <div class="hero-poster active" id="poster1"></div>
+          <div class="hero-poster next" id="poster2"></div>
+          <div class="recent-card">
+            <div class="recent-top">
+              <div class="recent-label">最近添加</div>
+              <div class="recent-title" id="recentTitle">蜘蛛侠：英雄无归</div>
+              <div class="recent-meta">
+                <span class="year" id="recentYear">2021</span>
+                <span class="dot"></span>
+                <span id="recentGenre">动作 / 冒险</span>
+              </div>
+            </div>
+            <div class="recent-bottom">
+              <span class="recent-library">媒体库已索引</span>
+              <span class="recent-badge">就绪</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 系统状态 五卡片 -->
+      <div class="section-title">
+        <span class="section-icon">📊</span>
+        <h3>系统状态</h3>
+        <p>双 NAS 设备关键指标 · 刚刚刷新</p>
+      </div>
+
+      <div class="health-grid">
+        <div class="glass-card health-card" id="cpu-card">
+          <div class="card-top">
+            <div class="label">CPU 使用率</div>
+            <div class="status-dot"></div>
+          </div>
+          <div class="value">23%</div>
+          <div class="sub">SA6400 · 正常负载 · 48°C</div>
+          <div class="progress-bar"><div class="progress-fill blue" style="width:23%"></div></div>
+        </div>
+        <div class="glass-card health-card" id="mem-card">
+          <div class="card-top">
+            <div class="label">内存</div>
+            <div class="status-dot"></div>
+          </div>
+          <div class="value">58%</div>
+          <div class="sub">合计 · 充足可用 · 55°C</div>
+          <div class="progress-bar"><div class="progress-fill purple" style="width:58%"></div></div>
+        </div>
+        <div class="glass-card health-card" id="storage-card">
+          <div class="card-top">
+            <div class="label">已用存储</div>
+            <div class="status-dot"></div>
+          </div>
+          <div class="value">19.2 TB</div>
+          <div class="sub">共 32 TB · 已用 60%</div>
+          <div class="progress-bar"><div class="progress-fill green" style="width:60%"></div></div>
+        </div>
+        <div class="glass-card health-card" id="tasks-card">
+          <div class="card-top">
+            <div class="label">活跃任务</div>
+            <div class="status-dot"></div>
+          </div>
+          <div class="value">12</div>
+          <div class="sub">3 个客户端 · 4 个即将完成</div>
+          <div class="progress-bar"><div class="progress-fill orange" style="width:45%"></div></div>
+        </div>
+        <div class="glass-card health-card" id="net-card">
+          <div class="card-top">
+            <div class="label">网络状态</div>
+            <div class="status-dot"></div>
+          </div>
+          <div class="value-row">
+            <div class="value-item"><span class="num">↓ 1.2 GB/s</span></div>
+            <div class="value-item"><span class="num">↑ 680 MB/s</span></div>
+          </div>
+          <div class="sub">当日 ↓ 84.2 GB · ↑ 12.6 GB</div>
+          <div class="progress-bar"><div class="progress-fill cyan" style="width:70%"></div></div>
+        </div>
+      </div>
+
+      <!-- 存储与性能(假数据,已隐藏,后续接真实API) -->
+      <!-- <div class="section-title">
+        <span class="section-icon">🗄️</span>
+        <h3>存储与性能</h3>
+        <p>容量与负载一目了然</p>
+      </div>
+
+      <div class="storage-grid">
+        <div class="glass-card">
+          <div class="card-header">
+            <h4><span class="h-icon">💾</span> 存储池</h4>
+            <a class="manage-link">管理存储池 →</a>
+          </div>
+          <div class="storage-pool">
+            <div class="pool-label">
+              <span class="name">SA6400 · SHR 存储池</span>
+              <span class="usage">已用 12.4 TB / 共 24 TB</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill green" style="width:52%"></div></div>
+          </div>
+          <div class="storage-pool">
+            <div class="pool-label">
+              <span class="name">SA6400 · SSD 缓存</span>
+              <span class="usage">已用 1.2 TB / 共 4 TB</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill blue" style="width:30%"></div></div>
+          </div>
+          <div class="storage-pool">
+            <div class="pool-label">
+              <span class="name">DS220+ · SHR 存储池</span>
+              <span class="usage">已用 6.8 TB / 共 8 TB</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill orange" style="width:85%"></div></div>
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-header">
+            <h4><span class="h-icon">🖥️</span> 设备性能</h4>
+            <span class="health-badge">HEALTHY</span>
+          </div>
+          <div class="device-row">
+            <div class="device-icon">🖥</div>
+            <div class="device-info">
+              <div class="name">SA6400</div>
+              <div class="stats">CPU 23% · 内存 58% · 网络 1.2 GB/s</div>
+            </div>
+            <div class="device-temp">48°C</div>
+          </div>
+          <div class="device-row">
+            <div class="device-icon">🖥</div>
+            <div class="device-info">
+              <div class="name">DS220+</div>
+              <div class="stats">CPU 41% · 内存 72% · 网络 680 MB/s</div>
+            </div>
+            <div class="device-temp">55°C</div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- 数据活动 -->
+      <div class="section-title">
+        <span class="section-icon">📥</span>
+        <h3>数据活动</h3>
+        <p>当前传输与做种 · 点击行查看任务详情</p>
+      </div>
+
+      <div class="glass-card download-card">
+        <!-- 全局限速条 -->
+        <div class="global-limit-bar">
+          <div class="global-limit-left">
+            <span class="global-limit-label">全局限速</span>
+            <span class="global-limit-value">↓ 10 MB/s · ↑ 5 MB/s</span>
+          </div>
+          <div class="limit-toggle" id="limitToggle"></div>
+        </div>
+
+        <div class="download-table">
+          <div class="table-header">
+            <div>种子名</div>
+            <div>状态</div>
+            <div>用户数</div>
+            <div>进度</div>
+            <div>速率</div>
+            <div>做种者</div>
+          </div>
+          <div class="table-row">
+            <div>
+              <div class="task-name">蜘蛛侠：英雄无归 (2021)</div>
+              <div class="task-sub">4K HDR · 62.4 GB</div>
+            </div>
+            <div><span class="status-downloading"><span class="status-dot"></span> 下载中</span></div>
+            <div class="peers">42</div>
+            <div class="progress-cell">82%<div class="bar progress-bar"><div class="progress-fill blue" style="width:82%"></div></div></div>
+            <div class="speed-row">
+              <div class="speed-item"><span class="arrow">↓</span> 18.2 MB/s</div>
+              <div class="speed-item"><span class="arrow">↑</span> 1.2 MB/s</div>
+            </div>
+            <div class="peers">42 / 18</div>
+          </div>
+          <div class="table-row">
+            <div>
+              <div class="task-name">沙丘 2 (2024)</div>
+              <div class="task-sub">4K UHD · 54.1 GB</div>
+            </div>
+            <div><span class="status-downloading"><span class="status-dot"></span> 下载中</span></div>
+            <div class="peers">28</div>
+            <div class="progress-cell">46%<div class="bar progress-bar"><div class="progress-fill blue" style="width:46%"></div></div></div>
+            <div class="speed-row">
+              <div class="speed-item"><span class="arrow">↓</span> 8.6 MB/s</div>
+              <div class="speed-item"><span class="arrow">↑</span> 0.8 MB/s</div>
+            </div>
+            <div class="peers">28 / 9</div>
+          </div>
+          <div class="table-row">
+            <div>
+              <div class="task-name">地球脉动 III · S01E02</div>
+              <div class="task-sub">1080p · 3.8 GB</div>
+            </div>
+            <div><span class="status-seeding"><span class="status-dot"></span> 做种中</span></div>
+            <div class="peers">12</div>
+            <div class="progress-cell">100%<div class="bar progress-bar"><div class="progress-fill green" style="width:100%"></div></div></div>
+            <div class="speed-row">
+              <div class="speed-item"><span class="arrow">↓</span> 0 KB/s</div>
+              <div class="speed-item"><span class="arrow">↑</span> 2.4 MB/s</div>
+            </div>
+            <div class="peers">12 / 4</div>
+          </div>
+        </div>
+        <div class="view-all">
+          <a>查看全部数据活动 →</a>
+        </div>
+      </div>
+
+      <!-- 媒体库与服务 -->
+      <div class="section-title">
+        <span class="section-icon">🎬</span>
+        <h3>媒体库与服务</h3>
+        <p>内容可用性与应用状态一览</p>
+      </div>
+
+      <div class="library-grid">
+        <div class="glass-card">
+          <div class="card-header">
+            <h4><span class="h-icon">📚</span> 媒体库</h4>
+            <a class="manage-link">浏览 →</a>
+          </div>
+          <div class="lib-stats">
+            <div class="lib-stat">
+              <div class="num" id="statMovies">-</div>
+              <div class="cat">部电影</div>
+            </div>
+            <div class="lib-stat">
+              <div class="num" id="statMusic">-</div>
+              <div class="cat">张专辑</div>
+            </div>
+            <div class="lib-stat">
+              <div class="num" id="statShows">-</div>
+              <div class="cat">部剧集</div>
+            </div>
+          </div>
+          <div class="lib-footer">
+            上次扫描完成于 12 分钟前<br>
+            <span class="check">●</span> 所有媒体库均已更新
+          </div>
+        </div>
+
+        <div class="glass-card">
+          <div class="card-header">
+            <h4><span class="h-icon">⚙️</span> 家庭服务</h4>
+            <a class="manage-link">管理 →</a>
+          </div>
+          <div class="services-grid">
+            <div class="service-item">
+              <div class="service-icon" style="background:rgba(59,130,246,0.15);">🎬</div>
+              <div class="service-info">
+                <div class="service-name">Emby</div>
+                <div class="service-desc">媒体串流</div>
+              </div>
+              <div class="service-dot on"></div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon" style="background:rgba(168,85,247,0.15);">🎬</div>
+              <div class="service-info">
+                <div class="service-name">Jellyseerr</div>
+                <div class="service-desc">请求管理</div>
+              </div>
+              <div class="service-dot on"></div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon" style="background:rgba(236,72,153,0.15);">🎵</div>
+              <div class="service-info">
+                <div class="service-name">Navidrome</div>
+                <div class="service-desc">音乐服务</div>
+              </div>
+              <div class="service-dot on"></div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon" style="background:rgba(34,197,94,0.15);">🤖</div>
+              <div class="service-info">
+                <div class="service-name">MoviePilot</div>
+                <div class="service-desc">自动化整理</div>
+              </div>
+              <div class="service-dot on"></div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon" style="background:rgba(249,115,22,0.15);">🏠</div>
+              <div class="service-info">
+                <div class="service-name">Home Assistant</div>
+                <div class="service-desc">智能家居</div>
+              </div>
+              <div class="service-dot on"></div>
+            </div>
+            <div class="service-item">
+              <div class="service-icon" style="background:rgba(245,158,11,0.15);">🛡️</div>
+              <div class="service-info">
+                <div class="service-name">AdGuard</div>
+                <div class="service-desc">DNS 过滤</div>
+              </div>
+              <div class="service-dot warn"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-bar">
+        <div>NORTHSTAR NAS · 本地仪表盘</div>
+        <div>刚刚更新 · 刷新</div>
+      </div>
+    </div>
+
+    <!-- ========== 页面 2: 存储 Storage ========== -->
+    <div class="page" id="page-storage">
+      <div class="page-title">
+        <h1>存储概览</h1>
+        <p>容量、健康状态与建议</p>
+      </div>
+      <div id="storagePageContent">
+        <div style="text-align:center;padding:60px;opacity:0.6">加载中...</div>
+      </div>
+    </div>
+
+    <!-- ========== 页面 3: 数据活动 Transfers ========== -->
+    <div class="page" id="page-transfers">
+      <div class="page-title">
+        <h1>数据活动</h1>
+        <p>监控上传下载进度、速度与连接客户端</p>
+      </div>
+
+      <div class="section-title">
+        <span class="section-icon">📥</span>
+        <h3>活跃传输</h3>
+      </div>
+
+      <!-- 下载器标签页 -->
+      <div style="display:flex;gap:8px;margin-bottom:16px;">
+        <button class="downloader-tab active" data-downloader="qb" onclick="switchDownloader('qb')" style="padding:8px 16px;border-radius:8px;border:none;cursor:pointer;background:rgba(59,130,246,0.2);color:#3b82f6;font-size:14px;">SA6400 · qBittorrent</button>
+        <button class="downloader-tab" data-downloader="tr" onclick="switchDownloader('tr')" style="padding:8px 16px;border-radius:8px;border:none;cursor:pointer;background:rgba(255,255,255,0.05);color:inherit;font-size:14px;opacity:0.6;">SA6400 · Transmission</button>
+      </div>
+
+      <div class="glass-card">
+        <!-- 全局限速条 -->
+        <div class="global-limit-bar">
+          <div class="global-limit-left">
+            <span class="global-limit-label">全局限速</span>
+            <span class="global-limit-value">↓ 10 MB/s · ↑ 5 MB/s</span>
+          </div>
+          <div class="limit-toggle" id="limitToggle2"></div>
+        </div>
+
+        <div class="transfers-list" id="transfersList">
+          <div style="text-align:center;padding:40px;opacity:0.6">加载中...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 页面 4: 媒体库 Media ========== -->
+    <div class="page" id="page-media">
+      <div class="page-title">
+        <h1>媒体库</h1>
+        <p>你的索引收藏，一目了然</p>
+      </div>
+
+      <!-- 当前任务状态(动态获取,暂隐藏假数据) -->
+      <!-- <div class="task-status-bar">
+        <div class="task-icon">🤖</div>
+        <div>
+          <div class="task-title">MoviePilot 正在整理《沙丘 2》4K UHD 版</div>
+          <div class="task-desc">当前进度：刮削元数据 · 已完成 68%</div>
+        </div>
+      </div> -->
+
+      <div class="section-title">
+        <span class="section-icon">🎬</span>
+        <h3>收藏统计</h3>
+      </div>
+
+      <div class="media-detail-grid">
+        <!-- 电影 -->
+        <div class="glass-card media-detail-card">
+          <div class="cat-icon">🎥</div>
+          <div class="cat-name">电影</div>
+          <div class="cat-num">3,842</div>
+          <div class="cat-sub">部 · 总时长 18,240 小时</div>
+          <div class="sub-category-list">
+            <div class="sub-category-item">
+              <span>欧美电影</span>
+              <span class="sub-num">2,456 部</span>
+            </div>
+            <div class="sub-category-item">
+              <span>华语电影</span>
+              <span class="sub-num">892 部</span>
+            </div>
+            <div class="sub-category-item">
+              <span>日韩电影</span>
+              <span class="sub-num">494 部</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 剧集 -->
+        <div class="glass-card media-detail-card">
+          <div class="cat-icon">📺</div>
+          <div class="cat-name">剧集</div>
+          <div class="cat-num">128</div>
+          <div class="cat-sub">部 · 共 8,562 集</div>
+          <div class="sub-category-list">
+            <div class="sub-category-item">
+              <span>欧美剧</span>
+              <span class="sub-num">78 部 · 5,230 集</span>
+            </div>
+            <div class="sub-category-item">
+              <span>国产剧</span>
+              <span class="sub-num">35 部 · 2,842 集</span>
+            </div>
+            <div class="sub-category-item">
+              <span>日剧</span>
+              <span class="sub-num">15 部 · 490 集</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 纪录片 -->
+        <div class="glass-card media-detail-card">
+          <div class="cat-icon">🌍</div>
+          <div class="cat-name">纪录片</div>
+          <div class="cat-num">86</div>
+          <div class="cat-sub">部 · 共 1,248 集</div>
+          <div class="sub-category-list">
+            <div class="sub-category-item">
+              <span>自然纪录片</span>
+              <span class="sub-num">42 部 · 586 集</span>
+            </div>
+            <div class="sub-category-item">
+              <span>人文纪录片</span>
+              <span class="sub-num">44 部 · 662 集</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 音乐 -->
+        <div class="glass-card media-detail-card">
+          <div class="cat-icon">🎵</div>
+          <div class="cat-name">音乐</div>
+          <div class="cat-num">512</div>
+          <div class="cat-sub">张专辑 · 共 8,456 首</div>
+          <div class="sub-category-list">
+            <div class="sub-category-item">
+              <span>流行音乐</span>
+              <span class="sub-num">268 张</span>
+            </div>
+            <div class="sub-category-item">
+              <span>古典音乐</span>
+              <span class="sub-num">142 张</span>
+            </div>
+            <div class="sub-category-item">
+              <span>影视原声</span>
+              <span class="sub-num">102 张</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 最近入库 -->
+      <div class="section-title">
+        <span class="section-icon">✨</span>
+        <h3>最近入库</h3>
+      </div>
+
+      <div class="glass-card">
+        <div id="recentList" class="recent-list">
+          <!-- 动态加载 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 页面 5: 服务 Applications ========== -->
+    <div class="page" id="page-applications">
+      <div class="page-title">
+        <h1>服务状态</h1>
+        <p>按设备分组的服务运行状态与外联连通性</p>
+      </div>
+
+      <!-- SA6400 主站服务 -->
+      <div class="section-title">
+        <span class="section-icon">🖥️</span>
+        <h3>SA6400 主站服务</h3>
+      </div>
+
+      <div class="apps-grid" id="saServicesList">
+        <div style="opacity:0.6;padding:20px;">加载中...</div>
+      </div>
+
+      <!-- DS220+ 辅站服务(假数据,已隐藏) -->
+      <!-- <div class="section-title" style="margin-top:28px;">
+        <span class="section-icon">🖥️</span>
+        <h3>DS220+ 辅站服务</h3>
+      </div>
+
+      <div class="apps-grid">
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(249,115,22,0.15);">🏠</div>
+          <div class="app-info">
+            <div class="app-name">Home Assistant</div>
+            <div class="app-desc">智能家居 · 8123</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 运行中</div>
+        </div>
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(239,68,68,0.15);">💾</div>
+          <div class="app-info">
+            <div class="app-name">Hyper Backup</div>
+            <div class="app-desc">数据备份 · 计划任务</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 运行中</div>
+        </div>
+      </div> -->
+
+      <!-- 外联服务连通性(假数据,已隐藏,后续接真实API) -->
+      <!-- <div class="section-title" style="margin-top:28px;">
+        <span class="section-icon">🌐</span>
+        <h3>外联服务连通性</h3>
+      </div>
+
+      <div class="apps-grid">
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(59,130,246,0.15);">💬</div>
+          <div class="app-info">
+            <div class="app-name">飞书</div>
+            <div class="app-desc">消息推送 · open.feishu.cn</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 已连通</div>
+        </div>
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(34,197,94,0.15);">✈️</div>
+          <div class="app-info">
+            <div class="app-name">Telegram</div>
+            <div class="app-desc">通知通道 · api.telegram.org</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 已连通</div>
+        </div>
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(236,72,153,0.15);">📚</div>
+          <div class="app-info">
+            <div class="app-name">豆瓣</div>
+            <div class="app-desc">元数据 · movie.douban.com</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 已连通</div>
+        </div>
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(168,85,247,0.15);">🎬</div>
+          <div class="app-info">
+            <div class="app-name">TMDb</div>
+            <div class="app-desc">电影元数据 · api.themoviedb.org</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 已连通</div>
+        </div>
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(249,115,22,0.15);">🎵</div>
+          <div class="app-info">
+            <div class="app-name">MusicBrainz</div>
+            <div class="app-desc">音乐元数据 · musicbrainz.org</div>
+          </div>
+          <div class="app-status on"><span class="dot"></span> 已连通</div>
+        </div>
+        <div class="glass-card app-card">
+          <div class="app-icon" style="background:rgba(6,182,212,0.15);">🍿</div>
+          <div class="app-info">
+            <div class="app-name">PT 站点</div>
+            <div class="app-desc">种子抓取 · 6 个站点</div>
+          </div>
+          <div class="app-status review"><span class="dot"></span> 2 个异常</div>
+        </div>
+      </div> -->
+    </div>
+
+    <!-- ========== 页面 6: 脚本 Scripts ========== -->
+    <div class="page" id="page-scripts">
+      <div class="page-title">
+        <h1>脚本服务</h1>
+        <p>自动化脚本运行状态与调度任务</p>
+      </div>
+
+      <div class="section-title">
+        <span class="section-icon">⚙️</span>
+        <h3>常驻守护脚本</h3>
+      </div>
+
+      <div class="glass-card">
+        <div class="events-list">
+          <div class="event-row">
+            <div class="event-time">运行中</div>
+            <div class="event-text">搜索桥服务 <span style="opacity:0.5;font-size:12px;margin-left:8px;">port 18101 · 自动重启守护</span></div>
+            <div class="event-tag success">正常</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">运行中</div>
+            <div class="event-text">限速守护 <span style="opacity:0.5;font-size:12px;margin-left:8px;">视频 1024KB/s · 音频 8192KB/s</span></div>
+            <div class="event-tag success">正常</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">运行中</div>
+            <div class="event-text">事件触发监听 <span style="opacity:0.5;font-size:12px;margin-left:8px;">docker events → 自动整理入库</span></div>
+            <div class="event-tag success">正常</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">运行中</div>
+            <div class="event-text">Cookie 同步 <span style="opacity:0.5;font-size:12px;margin-left:8px;">CookieCloud 每日同步</span></div>
+            <div class="event-tag success">正常</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">待检查</div>
+            <div class="event-text">缺失剧集扫描 <span style="opacity:0.5;font-size:12px;margin-left:8px;">上次运行 3 天前</span></div>
+            <div class="event-tag warning">待运行</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:24px;">
+        <span class="section-icon">📅</span>
+        <h3>定时调度任务</h3>
+      </div>
+
+      <div class="glass-card">
+        <div class="events-list">
+          <div class="event-row">
+            <div class="event-time">每日 03:00</div>
+            <div class="event-text">红种死种检查与补种</div>
+            <div class="event-tag success">已配置</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">每日 04:00</div>
+            <div class="event-text">媒体库统计同步到飞书 Base</div>
+            <div class="event-tag success">已配置</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">每日 05:00</div>
+            <div class="event-text">脚本索引更新与 skill 同步检查</div>
+            <div class="event-tag success">已配置</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">每周日 02:00</div>
+            <div class="event-text">缺失剧集全盘扫描</div>
+            <div class="event-tag success">已配置</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">每周六 06:00</div>
+            <div class="event-text">音乐 MB 预校验清单生成</div>
+            <div class="event-tag success">已配置</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 页面 6: 活动 Events ========== -->
+    <div class="page" id="page-events">
+      <div class="page-title">
+        <h1>活动日志</h1>
+        <p>最近的系统事件与操作记录</p>
+      </div>
+
+      <div class="section-title">
+        <span class="section-icon">📋</span>
+        <h3>最近事件</h3>
+      </div>
+
+      <div class="glass-card">
+        <div class="events-list">
+          <div class="event-row">
+            <div class="event-time">14:32</div>
+            <div class="event-text">MoviePilot 完成《蜘蛛侠：英雄无归》整理入库</div>
+            <div class="event-tag success">成功</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">13:15</div>
+            <div class="event-text">Transmission 开始下载《沙丘 2》4K UHD 版</div>
+            <div class="event-tag info">下载</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">11:48</div>
+            <div class="event-text">Emby 媒体库扫描完成，新增 12 部影片</div>
+            <div class="event-tag success">扫描</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">09:22</div>
+            <div class="event-text">DS220+ 存储池使用率达到 85%，触发容量提醒</div>
+            <div class="event-tag warn">警告</div>
+          </div>
+          <div class="event-row">
+            <div class="event-time">08:00</div>
+            <div class="event-text">系统定时任务：种子健康检查完成</div>
+            <div class="event-tag info">系统</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== 搜索结果页 ========== -->
+    <div class="page" id="page-search">
+      <div class="search-results-header">
+        <div class="search-back" onclick="switchPage('overview')">←</div>
+        <div class="search-query" id="searchQueryText">搜索结果</div>
+        <div class="search-source-tag" id="searchSourceTag">Emby 媒体库</div>
+        <div class="search-results-count" id="searchResultsCount">0 个结果</div>
+      </div>
+
+      <!-- Emby 搜索结果: 影片网格 -->
+      <div id="searchResultsMovies" class="movie-grid">
+        <!-- 动态生成 -->
+      </div>
+
+      <!-- 站点资源搜索结果: 种子列表 -->
+      <div id="searchResultsTorrents" class="torrent-list" style="display:none;">
+        <!-- 动态生成 -->
+      </div>
+
+      <!-- 空状态 -->
+      <div id="searchResultsEmpty" style="display:none; text-align:center; padding:60px 0; opacity:0.5;">
+        <div style="font-size:48px; margin-bottom:16px;">🔍</div>
+        <div style="font-size:16px;">未找到相关结果</div>
+        <div style="font-size:13px; margin-top:8px;">试试其他关键词</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ========== 配置区 ==========
+const CONFIG = {
+  slides: [
+    { poster: 'https://image.tmdb.org/t/p/original/roawIpy5sigBB7LsU4AJDw70jPo.jpg', title: '蜘蛛侠：英雄无归', year: '2021', genre: '动作 / 冒险' },
+    { poster: 'https://image.tmdb.org/t/p/original/4tjxYg2AbOzzG9G1YuiT2NzYhlH.jpg', title: '沙丘 2', year: '2024', genre: '科幻 / 冒险' },
+    { poster: 'https://image.tmdb.org/t/p/original/tzoarEu7TsG959upiELyYPm5kO9.jpg', title: '奥本海默', year: '2023', genre: '传记 / 历史' },
+    { poster: 'https://image.tmdb.org/t/p/original/oIglj0Jy9duG4LnrRUpH8n001Pk.jpg', title: '星际穿越', year: '2014', genre: '科幻 / 冒险' },
+    { poster: 'https://image.tmdb.org/t/p/original/b7t3r39Oll5qPxBKzLZ8eHMBD7l.jpg', title: '盗梦空间', year: '2010', genre: '科幻 / 悬疑' },
+    { poster: 'https://image.tmdb.org/t/p/original/ujUwzNV8ZkOzZonvhhHsc9KOKDf.jpg', title: '蝙蝠侠：黑暗骑士', year: '2008', genre: '动作 / 犯罪' },
+  ],
+  interval: 60000,
+  searchSources: {
+    bing: { name: 'Bing', icon: '🔍', url: 'https://www.bing.com/search?q=' },
+    emby: { name: 'Emby', icon: '🎬', url: 'http://10.31.0.88:8096/web/index.html#!/search?query=' },
+    site: { name: '站点资源', icon: '🌐', url: 'https://www.google.com/search?q=site:10.31.0.88+' },
+  },
+  currentSearch: 'bing',
+};
+
+const PAGE_TITLES = {
+  overview: '仪表盘',
+  applications: '服务',
+  media: '媒体库',
+  transfers: '数据活动',
+  storage: '存储',
+  scripts: '脚本服务',
+  events: '活动日志',
+  search: '搜索结果',
+};
+
+// ========== 页面切换 ==========
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const page = link.dataset.page;
+    switchPage(page);
+  });
+});
+
+function switchPage(pageName) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + pageName).classList.add('active');
+  document.querySelector(`.nav-link[data-page="${pageName}"]`).classList.add('active');
+  document.getElementById('crumbCurrent').textContent = PAGE_TITLES[pageName];
+}
+
+// ========== 搜索下拉 ==========
+const searchSwitch = document.getElementById('searchSwitch');
+const searchDropdown = document.getElementById('searchDropdown');
+
+searchSwitch.addEventListener('click', (e) => {
+  e.stopPropagation();
+  searchDropdown.classList.toggle('show');
+});
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.search-container')) {
+    searchDropdown.classList.remove('show');
+  }
+});
+
+document.querySelectorAll('.search-dropdown-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.search-dropdown-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const source = item.dataset.source;
+    CONFIG.currentSearch = source;
+    document.getElementById('currentSearchIcon').textContent = CONFIG.searchSources[source].icon;
+    document.getElementById('searchInput').placeholder = `搜索 ${CONFIG.searchSources[source].name}...`;
+    searchDropdown.classList.remove('show');
+  });
+});
+
+function handleSearch(e) {
+  if (e.key === 'Enter') {
+    const q = document.getElementById('searchInput').value.trim();
+    if (!q) return;
+    const source = CONFIG.currentSearch;
+
+    // Bing / 站点资源搜索跳新标签页
+    if (source === 'bing' || source === 'site') {
+      window.open(CONFIG.searchSources[source].url + encodeURIComponent(q), '_blank');
+      return;
+    }
+
+    // Emby 媒体库搜索: 站内展示结果
+    showSearchResults(q, source);
+  }
+}
+
+// ========== 搜索结果展示 ==========
+function showSearchResults(query, source) {
+  switchPage('search');
+  document.getElementById('searchQueryText').textContent = `“${query}”`;
+  document.getElementById('searchSourceTag').textContent = CONFIG.searchSources[source].name;
+
+  const moviesEl = document.getElementById('searchResultsMovies');
+  const torrentsEl = document.getElementById('searchResultsTorrents');
+  const emptyEl = document.getElementById('searchResultsEmpty');
+  const countEl = document.getElementById('searchResultsCount');
+
+  // 模拟数据 - 后面接真实 API
+  if (source === 'emby') {
+    // Emby 媒体库搜索结果
+    torrentsEl.style.display = 'none';
+    moviesEl.style.display = 'grid';
+
+    // 模拟匹配数据
+    const mockResults = [
+      { title: '蜘蛛侠：英雄无归', year: 2021, rating: 7.8, poster: 'https://image.tmdb.org/t/p/original/roawIpy5sigBB7LsU4AJDw70jPo.jpg', status: 'available' },
+      { title: '蜘蛛侠：纵横宇宙', year: 2023, rating: 8.6, poster: 'https://image.tmdb.org/t/p/original/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg', status: 'available' },
+      { title: '蜘蛛侠：平行宇宙', year: 2018, rating: 8.4, poster: 'https://image.tmdb.org/t/p/original/ii3JJvX0BPrTPrp2K0t0m7Xo6WS.jpg', status: 'available' },
+    ];
+
+    moviesEl.innerHTML = mockResults.map(m => `
+      <div class="movie-card">
+        <div class="movie-poster"><img src="${m.poster}" alt="${m.title}"></div>
+        <div class="movie-info">
+          <div class="movie-title">${m.title}</div>
+          <div class="movie-meta">
+            <span>${m.year}</span>
+            <span class="movie-rating">★ ${m.rating}</span>
+          </div>
+          <span class="movie-status available">已入库</span>
+        </div>
+      </div>
+    `).join('');
+
+    countEl.textContent = `${mockResults.length} 个结果`;
+    emptyEl.style.display = 'none';
+  } else if (source === 'sites') {
+    // PT 站点资源搜索结果
+    moviesEl.style.display = 'none';
+    torrentsEl.style.display = 'flex';
+
+    // 模拟种子数据
+    const mockTorrents = [
+      { name: 'Spider-Man.No.Way.Home.2021.2160p.UHD.BluRay.Remux.DV.HDR.HEVC.TrueHD.Atmos.7.1', size: '58.4 GB', seeders: 124, leechers: 18, site: 'PT站 A' },
+      { name: '蜘蛛侠：英雄无归.Spider-Man.No.Way.Home.2021.4K.X265.DDP5.1.国英双语', size: '18.2 GB', seeders: 86, leechers: 24, site: 'PT站 B' },
+      { name: 'Spider-Man.No.Way.Home.2021.1080p.BluRay.x264.DTS-HD.MA.5.1', size: '12.6 GB', seeders: 210, leechers: 42, site: 'PT站 C' },
+    ];
+
+    torrentsEl.innerHTML = mockTorrents.map(t => `
+      <div class="torrent-item">
+        <div class="torrent-icon">⬇️</div>
+        <div class="torrent-main">
+          <div class="torrent-name">${t.name}</div>
+          <div class="torrent-sub">
+            <span>${t.site}</span>
+            <span>${t.size}</span>
+          </div>
+        </div>
+        <div class="torrent-stats">
+          <div class="torrent-stat">
+            <div class="num" style="color:#4ade80;">${t.seeders}</div>
+            <div class="label">做种</div>
+          </div>
+          <div class="torrent-stat">
+            <div class="num" style="color:#60a5fa;">${t.leechers}</div>
+            <div class="label">下载</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    countEl.textContent = `${mockTorrents.length} 个结果`;
+    emptyEl.style.display = 'none';
+  }
+}
+
+// ========== 问候语 ==========
+function updateGreeting() {
+  const hour = new Date().getHours();
+  const el = document.getElementById('greeting');
+  if (hour < 12) el.textContent = 'Good Morning.';
+  else if (hour < 18) el.textContent = 'Good Afternoon.';
+  else el.textContent = 'Good Evening.';
+}
+
+// ========== 双图层交叉淡入淡出轮播 ==========
+let currentSlide = 0;
+let activeLayer = 1;
+
+function preloadImage(url) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve(url);
+    img.src = url;
+  });
+}
+
+async function initSlideshow() {
+  const first = CONFIG.slides[0];
+  document.getElementById('bg1').style.backgroundImage = `url('${first.poster}')`;
+  document.getElementById('poster1').style.backgroundImage = `url('${first.poster}')`;
+  updateSlideInfo(0);
+
+  for (const slide of CONFIG.slides) {
+    await preloadImage(slide.poster);
+  }
+
+  setInterval(nextSlide, CONFIG.interval);
+}
+
+async function nextSlide() {
+  currentSlide = (currentSlide + 1) % CONFIG.slides.length;
+  const next = CONFIG.slides[currentSlide];
+  await preloadImage(next.poster);
+
+  if (activeLayer === 1) {
+    document.getElementById('bg2').style.backgroundImage = `url('${next.poster}')`;
+    document.getElementById('poster2').style.backgroundImage = `url('${next.poster}')`;
+    document.getElementById('bg2').classList.remove('next');
+    document.getElementById('bg2').classList.add('active');
+    document.getElementById('bg1').classList.remove('active');
+    document.getElementById('bg1').classList.add('next');
+    document.getElementById('poster2').classList.remove('next');
+    document.getElementById('poster2').classList.add('active');
+    document.getElementById('poster1').classList.remove('active');
+    document.getElementById('poster1').classList.add('next');
+    activeLayer = 2;
+  } else {
+    document.getElementById('bg1').style.backgroundImage = `url('${next.poster}')`;
+    document.getElementById('poster1').style.backgroundImage = `url('${next.poster}')`;
+    document.getElementById('bg1').classList.remove('next');
+    document.getElementById('bg1').classList.add('active');
+    document.getElementById('bg2').classList.remove('active');
+    document.getElementById('bg2').classList.add('next');
+    document.getElementById('poster1').classList.remove('next');
+    document.getElementById('poster1').classList.add('active');
+    document.getElementById('poster2').classList.remove('active');
+    document.getElementById('poster2').classList.add('next');
+    activeLayer = 1;
+  }
+
+  updateSlideInfo(currentSlide);
+}
+
+function updateSlideInfo(index) {
+  const slide = CONFIG.slides[index];
+  document.getElementById('recentTitle').textContent = slide.title;
+  document.getElementById('recentYear').textContent = slide.year;
+  document.getElementById('recentGenre').textContent = slide.genre;
+}
+
+// ========== 限速开关 ==========
+document.getElementById('limitToggle').addEventListener('click', function() {
+  this.classList.toggle('off');
+});
+document.getElementById('limitToggle2').addEventListener('click', function() {
+  this.classList.toggle('off');
+});
+
+// ========== 真实数据拉取 ==========
+const API_BASE = 'http://10.31.0.88:28090/api';
+
+async function fetchJSON(path) {
+  try {
+    const resp = await fetch(API_BASE + path);
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch (e) {
+    console.warn('API fetch failed:', path, e);
+    return null;
+  }
+}
+
+function updateStatusCards(data) {
+  if (!data) return;
+  // CPU
+  const cpuEl = document.querySelector('#cpu-card .value');
+  if (cpuEl) cpuEl.textContent = Math.round(data.cpu) + '%';
+  const cpuBar = document.querySelector('#cpu-card .progress-fill');
+  if (cpuBar) cpuBar.style.width = data.cpu + '%';
+  // 内存
+  const memEl = document.querySelector('#mem-card .value');
+  if (memEl) memEl.textContent = Math.round(data.memory) + '%';
+  const memBar = document.querySelector('#mem-card .progress-fill');
+  if (memBar) memBar.style.width = data.memory + '%';
+  // 网络
+  const netEl = document.querySelector('#net-card .value-row');
+  if (netEl) {
+    // data.net_down/net_up 单位是 KB/s
+    const formatSpeed = (kbps) => {
+      if (kbps >= 1048576) return (kbps/1048576).toFixed(1)+' GB/s';
+      if (kbps >= 1024) return (kbps/1024).toFixed(1)+' MB/s';
+      return Math.round(kbps)+' KB/s';
+    };
+    netEl.innerHTML = `<div class="value">↓ ${formatSpeed(data.net_down)} <span style="font-size:14px;opacity:0.6">↑ ${formatSpeed(data.net_up)}</span></div>`;
+  }
+}
+
+async function fetchStorage() {
+  const data = await fetchJSON('/storage');
+  if (!data || !data.pools) return;
+  // 计算所有存储池总容量
+  let totalUsedGB = 0;
+  let totalSizeGB = 0;
+  data.pools.forEach(p => {
+    const usedStr = p.used;
+    const sizeStr = p.size;
+    if (usedStr.endsWith('T')) totalUsedGB += parseFloat(usedStr) * 1024;
+    else if (usedStr.endsWith('G')) totalUsedGB += parseFloat(usedStr);
+    if (sizeStr.endsWith('T')) totalSizeGB += parseFloat(sizeStr) * 1024;
+    else if (sizeStr.endsWith('G')) totalSizeGB += parseFloat(sizeStr);
+  });
+  const usedTB = (totalUsedGB / 1024).toFixed(1);
+  const totalTB = (totalSizeGB / 1024).toFixed(1);
+  const percent = totalSizeGB > 0 ? Math.round(totalUsedGB / totalSizeGB * 100) : 0;
+  
+  const storageEl = document.querySelector('#storage-card .value');
+  if (storageEl) storageEl.textContent = usedTB + ' TB';
+  const storageSub = document.querySelector('#storage-card .sub');
+  if (storageSub) storageSub.textContent = `共 ${totalTB} TB · 已用 ${percent}%`;
+  const storageBar = document.querySelector('#storage-card .progress-fill');
+  if (storageBar) storageBar.style.width = percent + '%';
+  
+  // 渲染存储页面
+  renderStoragePage(data.pools);
+}
+
+function renderStoragePage(pools) {
+  const container = document.getElementById('storagePageContent');
+  if (!container) return;
+  
+  const parseGB = (str) => {
+    if (str.endsWith('T')) return parseFloat(str) * 1024;
+    if (str.endsWith('G')) return parseFloat(str);
+    return 0;
+  };
+  
+  // 计算总容量
+  let totalUsed = 0, totalSize = 0, totalAvail = 0;
+  pools.forEach(p => {
+    totalUsed += parseGB(p.used);
+    totalSize += parseGB(p.size);
+    totalAvail += parseGB(p.avail);
+  });
+  const totalUsedTB = (totalUsed / 1024).toFixed(1);
+  const totalSizeTB = (totalSize / 1024).toFixed(1);
+  const totalAvailTB = (totalAvail / 1024).toFixed(1);
+  const totalPercent = totalSize > 0 ? Math.round(totalUsed / totalSize * 100) : 0;
+  
+  // 按类别分组
+  const groups = {
+    main: { name: 'SA6400 主机', icon: '🖥', pools: [] },
+    dsm2: { name: 'DS220+ 辅机', icon: '🖥', pools: [] },
+    hik: { name: '监控存储', icon: '📹', pools: [] }
+  };
+  pools.forEach(p => {
+    if (groups[p.category]) groups[p.category].pools.push(p);
+  });
+  
+  let html = '';
+  
+  // 容量提醒
+  const highUsage = pools.filter(p => p.percent >= 95);
+  if (highUsage.length > 0) {
+    html += `
+      <div class="alert-card-top">
+        <div class="alert-icon">⚠️</div>
+        <div>
+          <div class="alert-title">容量提醒</div>
+          <div class="alert-desc">${highUsage.map(p => p.mount + ' 已达 ' + p.percent + '%').join('、')}。建议清理或扩展容量。</div>
+        </div>
+      </div>
+    `;
+  }
+  
+  // 总存储卡片
+  html += `
+    <div class="glass-card" style="padding:24px;margin-bottom:20px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div>
+          <div style="font-size:14px;opacity:0.6;margin-bottom:4px;">总存储</div>
+          <div style="font-size:32px;font-weight:700;">${totalSizeTB} TB</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:14px;opacity:0.6;margin-bottom:4px;">已用 / 可用</div>
+          <div style="font-size:18px;">${totalUsedTB} TB / ${totalAvailTB} TB</div>
+        </div>
+      </div>
+      <div class="progress-bar" style="height:10px;">
+        <div class="progress-fill ${totalPercent >= 90 ? 'orange' : (totalPercent >= 70 ? 'cyan' : 'green')}" style="width:${totalPercent}%"></div>
+      </div>
+      <div style="margin-top:8px;font-size:13px;opacity:0.6;">已用 ${totalPercent}%</div>
+    </div>
+  `;
+  
+  html += `
+    <div class="section-title">
+      <span class="section-icon">🗄️</span>
+      <h3>存储池详情</h3>
+    </div>
+  `;
+  
+  // 渲染每组(抽屉式)
+  Object.values(groups).forEach((group, idx) => {
+    if (group.pools.length === 0) return;
+    
+    let groupUsed = 0, groupSize = 0;
+    group.pools.forEach(p => {
+      groupUsed += parseGB(p.used);
+      groupSize += parseGB(p.size);
+    });
+    const groupUsedTB = (groupUsed / 1024).toFixed(1);
+    const groupSizeTB = (groupSize / 1024).toFixed(1);
+    const groupPercent = groupSize > 0 ? Math.round(groupUsed / groupSize * 100) : 0;
+    
+    html += `
+      <div class="glass-card" style="padding:20px;margin-bottom:12px;cursor:pointer;" onclick="togglePoolGroup(this)">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:24px;">${group.icon}</div>
+            <div>
+              <div style="font-size:16px;font-weight:600;">${group.name}</div>
+              <div style="font-size:13px;opacity:0.6;">${group.pools.length} 个存储池 · ${groupPercent}% 已用</div>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:14px;opacity:0.6;">总容量</div>
+            <div style="font-size:18px;font-weight:600;">${groupSizeTB} TB</div>
+          </div>
+        </div>
+        <div class="pool-group-detail" style="display:block;margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
+    `;
+    
+    group.pools.forEach(p => {
+      const colorClass = p.percent >= 95 ? 'orange' : (p.percent >= 80 ? 'cyan' : 'green');
+      html += `
+        <div class="glass-card pool-card ${colorClass}" style="padding:16px;">
+          <div class="pool-name" style="font-size:14px;font-weight:600;margin-bottom:8px;">💾 ${p.mount.replace('/volume1/md/', '').replace(/^\//, '')}</div>
+          <div class="pool-usage" style="font-size:12px;opacity:0.7;margin-bottom:12px;">已用 ${p.used} / 共 ${p.size}</div>
+          <div class="progress-bar"><div class="progress-fill ${colorClass}" style="width:${p.percent}%"></div></div>
+          <div style="margin-top:6px;font-size:12px;opacity:0.6;">${p.avail} 可用 · ${p.percent}%</div>
+        </div>
+      `;
+    });
+    
+    html += `
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+function togglePoolGroup(el) {
+  const detail = el.querySelector('.pool-group-detail');
+  if (detail) {
+    detail.style.display = detail.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function switchDownloader(type) {
+  // 更新标签页样式
+  document.querySelectorAll('.downloader-tab').forEach(tab => {
+    if (tab.dataset.downloader === type) {
+      tab.style.background = 'rgba(59,130,246,0.2)';
+      tab.style.color = '#3b82f6';
+      tab.style.opacity = '1';
+    } else {
+      tab.style.background = 'rgba(255,255,255,0.05)';
+      tab.style.color = 'inherit';
+      tab.style.opacity = '0.6';
+    }
+  });
+  
+  // Transmission 暂未接入
+  const listEl = document.getElementById('transfersList');
+  if (type === 'tr') {
+    listEl.innerHTML = '<div style="text-align:center;padding:60px;opacity:0.6;">Transmission 数据接口接入中...</div>';
+  } else {
+    fetchTorrents();
+  }
+}
+
+async function fetchRecent() {
+  const data = await fetchJSON('/recent');
+  if (!data || !data.items) return;
+  const listEl = document.getElementById('recentList');
+  if (!listEl) return;
+  listEl.innerHTML = data.items.map(item => `
+    <div class="recent-item">
+      <div class="recent-poster">${item.image ? `<img src="${item.image}" alt="${item.title}">` : '🎬'}</div>
+      <div class="recent-info">
+        <div class="recent-title">${item.title}</div>
+        <div class="recent-meta">
+          <span>${item.year || ''}</span>
+          <span>${item.type || ''}</span>
+          ${item.rating ? `<span style="color:#fbbf24;">★ ${item.rating}</span>` : ''}
+        </div>
+        <div class="recent-date">${item.date || ''}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function fetchStatus() {
+  const data = await fetchJSON('/status');
+  updateStatusCards(data);
+}
+
+async function fetchMediaStats() {
+  const data = await fetchJSON('/media');
+  if (!data) return;
+  const moviesEl = document.getElementById('statMovies');
+  const showsEl = document.getElementById('statShows');
+  const musicEl = document.getElementById('statMusic');
+  const heroMeta = document.getElementById('heroMeta');
+  if (moviesEl) moviesEl.textContent = (data.movies || 0).toLocaleString();
+  if (showsEl) showsEl.textContent = (data.shows || 0).toLocaleString();
+  if (musicEl) musicEl.textContent = (data.music || 0).toLocaleString();
+  if (heroMeta) heroMeta.textContent = `${(data.movies || 0).toLocaleString()} 部电影 · ${(data.shows || 0).toLocaleString()} 部剧集 · 实时更新`;
+}
+
+async function fetchApps() {
+  const data = await fetchJSON('/apps');
+  if (!data || !data.apps) return;
+  const listEl = document.getElementById('saServicesList');
+  if (!listEl) return;
+  listEl.innerHTML = data.apps.map(app => `
+    <a class="glass-card app-card" href="${app.url}" target="_blank" style="text-decoration:none;color:inherit;cursor:pointer;">
+      <div class="app-icon" style="background:rgba(255,255,255,0.1);">${app.icon || '📦'}</div>
+      <div class="app-info">
+        <div class="app-name">${app.name}</div>
+        <div class="app-desc">${app.desc}</div>
+      </div>
+      <div class="app-status ${app.status === 'online' ? 'on' : 'off'}">
+        <span class="dot"></span> ${app.status === 'online' ? '运行中' : '离线'}
+      </div>
+    </a>
+  `).join('');
+}
+
+async function fetchTorrents() {
+  const data = await fetchJSON('/torrents');
+  const listEl = document.getElementById('transfersList');
+  if (!listEl) return;
+  if (!data || !data.torrents || data.torrents.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6">暂无种子</div>';
+    return;
+  }
+  // 格式化大小
+  const formatSize = (bytes) => {
+    if (bytes >= 1099511627776) return (bytes/1099511627776).toFixed(1) + ' TB';
+    if (bytes >= 1073741824) return (bytes/1073741824).toFixed(1) + ' GB';
+    if (bytes >= 1048576) return (bytes/1048576).toFixed(1) + ' MB';
+    return Math.round(bytes/1024) + ' KB';
+  };
+  // 格式化速度
+  const formatSpeed = (bytes) => {
+    if (bytes >= 1048576) return (bytes/1048576).toFixed(1) + ' MB/s';
+    if (bytes >= 1024) return (bytes/1024).toFixed(0) + ' KB/s';
+    return bytes + ' B/s';
+  };
+  
+  listEl.innerHTML = data.torrents.slice(0, 10).map(t => {
+    const isDownloading = t.state && t.state.toLowerCase().includes('download');
+    const isSeeding = t.state && t.state.toLowerCase().includes('upload') || t.progress >= 100;
+    const statusClass = isSeeding ? 'status-seeding' : 'status-downloading';
+    const statusText = isSeeding ? '做种中' : (isDownloading ? '下载中' : '已暂停');
+    const statusColor = isSeeding ? '#22c55e' : '#38bdf8';
+    const progressColor = isSeeding ? '#22c55e' : '#38bdf8';
+    return `
+      <div class="transfer-row">
+        <div>
+          <div class="task-name">${t.name}</div>
+          <div class="task-sub">${formatSize(t.size)}</div>
+        </div>
+        <div><span class="${statusClass}"><span class="status-dot" style="background:${statusColor}"></span> ${statusText}</span></div>
+        <div class="peers">${t.num_seeds}</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${t.progress}%;background:${progressColor}"></div></div>
+        <div class="speed-row">
+          <div class="speed-item"><span class="arrow">↓</span> ${formatSpeed(t.dlspeed)}</div>
+          <div class="speed-item"><span class="arrow">↑</span> ${formatSpeed(t.upspeed)}</div>
+        </div>
+        <div class="peers">${t.num_seeds} / ${t.num_leechs}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function fetchAllData() {
+  await Promise.all([fetchStatus(), fetchTorrents(), fetchStorage(), fetchRecent(), fetchMediaStats(), fetchApps()]);
+}
+
+// ========== 初始化 ==========
+updateGreeting();
+initSlideshow();
+fetchAllData();
+setInterval(fetchAllData, 5000);
+</script>
+
 </body>
 </html>
