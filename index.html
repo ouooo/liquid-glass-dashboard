@@ -781,6 +781,7 @@
       flex-direction: column;
       aspect-ratio: auto;
       min-height: 0;
+      border-radius: 20px;
     }
     .hero-media-left {
       flex: none;
@@ -789,10 +790,19 @@
     }
     .hero-media-left h2 { font-size: 22px; margin-bottom: 8px; }
     .hero-media-right {
-      height: 180px;
+      height: 240px;
       flex: none;
       width: 100%;
     }
+    .recent-card {
+      position: absolute;
+      left: 12px; right: 12px; bottom: 12px;
+      top: auto; transform: none;
+      width: auto; padding: 16px;
+      border-radius: 14px;
+    }
+    .recent-card .recent-title { font-size: 16px; }
+    .recent-card .recent-bottom { padding-top: 10px; margin-top: 10px; }
     .greeting h1 { font-size: 32px !important; }
     }
     .transfer-table {
