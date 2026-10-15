@@ -776,6 +776,24 @@
     .services-grid { grid-template-columns: 1fr; }
     .movie-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
     .recent-list { grid-template-columns: 1fr; }
+    /* Hero 轮播卡片:竖屏上下堆叠 */
+    .hero-media {
+      flex-direction: column;
+      aspect-ratio: auto;
+      min-height: 0;
+    }
+    .hero-media-left {
+      flex: none;
+      width: 100%;
+      padding: 22px 20px;
+    }
+    .hero-media-left h2 { font-size: 22px; margin-bottom: 8px; }
+    .hero-media-right {
+      height: 180px;
+      flex: none;
+      width: 100%;
+    }
+    .greeting h1 { font-size: 32px !important; }
     }
     .transfer-table {
       font-size: 12px;
