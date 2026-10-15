@@ -693,6 +693,9 @@
   .event-tag.success { background:rgba(34,197,94,0.2); color:#4ade80; }
   .event-tag.warn { background:rgba(249,115,22,0.2); color:#fb923c; }
 
+  /* ===== 移动端底部 TabBar(默认隐藏,窄屏显示) ===== */
+  .mobile-tabbar { display:none; }
+
   /* ===== 响应式自适应 ===== */
   /* 平板 (768px - 1024px) */
   @media (max-width: 1024px) {
@@ -720,53 +723,59 @@
     }
   }
 
-  /* 手机横屏 / 小平板 (480px - 768px) */
+  /* 手机竖屏/小屏 (≤768px):隐藏侧栏,改吸底 TabBar */
   @media (max-width: 768px) {
-    .sidebar {
-      width: 100%;
-      height: auto;
-      position: relative;
-      padding: 12px;
+    .sidebar { display:none !important; }
+    .main {
+      margin-left: 0 !important;
+      padding: 16px 14px 100px;
     }
-    .sidebar-nav {
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      gap: 8px;
+    .mobile-tabbar {
+      display:flex;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      gap: 4px;
+      padding: 8px;
+      border-radius: 100px;
+      background: rgba(30,32,40,0.55);
+      backdrop-filter: blur(28px) saturate(1.6);
+      -webkit-backdrop-filter: blur(28px) saturate(1.6);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
     }
-    .nav-link {
-      white-space: nowrap;
-      padding: 8px 12px;
+    .mobile-tabbar .tab {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      font-size: 22px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.55);
+      transition: all 0.25s ease;
     }
-    .main-content {
-      margin-left: 0;
-      padding: 16px;
+    .mobile-tabbar .tab.active {
+      background: rgba(255,255,255,0.14);
+      color: #fff;
     }
+    .mobile-tabbar .tab:active { transform: scale(0.92); }
     .top-row {
       flex-direction: column;
       align-items: stretch;
     }
-    .search-box {
-      width: 100%;
-    }
+    .search-box { width: 100%; }
     .health-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 10px;
     }
-    .lib-stats {
-      grid-template-columns: repeat(2, 1fr);
-    }
-    .library-grid {
-      grid-template-columns: 1fr;
-    }
-    .services-grid {
-      grid-template-columns: 1fr;
-    }
-    .movie-grid {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    }
-    .recent-list {
-      grid-template-columns: 1fr;
+    .lib-stats { grid-template-columns: repeat(2, 1fr); }
+    .library-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .movie-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+    .recent-list { grid-template-columns: 1fr; }
     }
     .transfer-table {
       font-size: 12px;
@@ -850,6 +859,15 @@
 
     <div class="footer">v2.0.0 · 局域网</div>
   </aside>
+
+  <!-- 移动端底部吸底 TabBar(窄屏显示) -->
+  <nav class="mobile-tabbar" id="mobileTabbar">
+    <a class="tab active" data-page="overview">🏠</a>
+    <a class="tab" data-page="applications">⚙️</a>
+    <a class="tab" data-page="media">🎬</a>
+    <a class="tab" data-page="storage">💾</a>
+    <a class="tab" data-page="events">📋</a>
+  </nav>
 
   <!-- 右侧内容区 -->
   <main class="main">
@@ -1674,10 +1692,23 @@ document.querySelectorAll('.nav-link').forEach(link => {
 function switchPage(pageName) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll('.mobile-tabbar .tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + pageName).classList.add('active');
-  document.querySelector(`.nav-link[data-page="${pageName}"]`).classList.add('active');
+  const navLink = document.querySelector(`.nav-link[data-page="${pageName}"]`);
+  if (navLink) navLink.classList.add('active');
+  const tab = document.querySelector(`.mobile-tabbar .tab[data-page="${pageName}"]`);
+  if (tab) tab.classList.add('active');
   document.getElementById('crumbCurrent').textContent = PAGE_TITLES[pageName];
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// 移动端 TabBar 点击
+document.querySelectorAll('.mobile-tabbar .tab').forEach(tab => {
+  tab.addEventListener('click', (e) => {
+    e.preventDefault();
+    switchPage(tab.dataset.page);
+  });
+});
 
 // ========== 搜索下拉 ==========
 const searchSwitch = document.getElementById('searchSwitch');
