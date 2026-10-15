@@ -54,7 +54,7 @@ HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "localhost")
 
 echo ""
 echo "======================================"
-echo "  ✅ NEXUS Dashboard 启动完成!"
+echo "  ✅ Liquid Glass Dashboard 启动完成!"
 echo "======================================"
 echo ""
 echo "  访问地址:"
