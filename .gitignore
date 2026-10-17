@@ -1,0 +1,10 @@
+# 本地配置与运行时数据（含敏感信息，切勿提交）
+config.json
+cookies.json
+favorites.json
+sessions.json
+script_runs.json
+*.pyc
+__pycache__/
+*.log
+.DS_Store
