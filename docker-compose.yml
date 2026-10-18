@@ -1,0 +1,14 @@
+services:
+  nexus-dashboard:
+    build: .
+    image: nexus-dashboard:latest
+    container_name: nexus-dashboard
+    restart: unless-stopped
+    ports:
+      - "28080:28080"
+    volumes:
+      - ./data:/data
+      - ./config.json:/app/config.json:ro
+      - /volume1/docker/scripts:/scripts:ro
+    environment:
+      - TZ=Asia/Shanghai
