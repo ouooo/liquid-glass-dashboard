@@ -472,8 +472,8 @@
     pointer-events:auto;
   }
   .poster-overlay-title { font-size:26px; font-weight:800; color:#fff; line-height:1.2; margin-bottom:6px; text-shadow:0 1px 6px rgba(0,0,0,0.45); }
-  .poster-overlay-meta { font-size:14px; color:rgba(255,255,255,0.85); margin-bottom:6px; text-shadow:0 1px 4px rgba(0,0,0,0.35); }
-  .poster-overlay-overview { font-size:13px; color:rgba(255,255,255,0.72); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; max-width:720px; text-shadow:0 1px 4px rgba(0,0,0,0.3); }
+  .poster-overlay-meta { font-size:15px; color:rgba(255,255,255,0.85); margin-bottom:6px; text-shadow:0 1px 4px rgba(0,0,0,0.35); }
+  .poster-overlay-overview { font-size:14px; color:rgba(255,255,255,0.75); line-height:1.5; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; max-width:720px; text-shadow:0 1px 4px rgba(0,0,0,0.3); }
   .ov-chip { display:inline-flex; align-items:center; padding:3px 10px; border-radius:14px; background:rgba(255,255,255,0.14); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); font-size:11px; color:#fff; margin:0 4px 4px 0; text-shadow:none; }
   .ov-chip-gold { background:rgba(255,214,10,0.24); color:#FFD60A; font-weight:700; }
 
@@ -501,8 +501,8 @@
     display:flex; gap:12px; margin-bottom:6px;
   }
   .health-card .value-item { font-size:13px; color:rgba(255,255,255,0.7); }
-  .health-card .value-item .num { font-weight:700; color:#fff; }
-  .health-card .sub { font-size:11px; color:rgba(255,255,255,0.4); margin-bottom:16px; }
+  .health-card .value-item .num { font-size:18px; font-weight:700; color:#fff; }
+  .health-card .sub { font-size:12px; color:rgba(255,255,255,0.45); margin-bottom:16px; }
   .progress-bar {
     height:4px; border-radius:999px; background:rgba(255,255,255,0.08); overflow:hidden;
   }
@@ -796,6 +796,9 @@
     border:1px solid rgba(255,255,255,0.14); background:rgba(0,0,0,0.28);
     color:#fff; font-size:12px; box-sizing:border-box;
   }
+  .svc-add-form select { appearance:none; -webkit-appearance:none; padding-right:28px;
+    background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M2 3.5L5 6.5L8 3.5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 10px center; cursor:pointer; }
   .svc-add-confirm {
     height:34px; padding:0 16px; border-radius:8px; flex-shrink:0; cursor:pointer;
     border:none; background:#fff; color:#0a0a0a; font-size:12px; font-weight:700;
@@ -1689,7 +1692,7 @@
           <div class="poster-overlay" style="cursor:pointer;" onclick="openHeroDetail()">
             <div class="poster-overlay-title" id="overlayTitle">蜘蛛侠：英雄无归</div>
             <div class="poster-overlay-meta" id="overlayMeta">2021 · 动作 / 冒险</div>
-            <div class="poster-overlay-overview" id="overlayOverview" style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:6px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;"></div>
+            <div class="poster-overlay-overview" id="overlayOverview"></div>
           </div>
         </div>
       </div>
@@ -2801,9 +2804,8 @@ function renderSvcConfig() {
         <option value="" disabled selected>服务选择</option>
         ${SERVICE_TYPES.map(t => `<option value="${t.name}" data-icon="${t.icon}" data-desc="${t.desc}">${t.icon} ${t.name}</option>`).join('')}
       </select>
-      <input id="svcNewName" placeholder="服务名称" style="flex:1;min-width:0;">
+      <input id="svcNewName" placeholder="显示名称/别名（可选，默认用类型名）" style="flex:1;min-width:0;">
     </div>
-    <div class="svc-alias-row"><input id="svcNewAlias" placeholder="可在此设置服务别名，例：xxx 的 Emby" style="flex:1;min-width:0;"></div>
     <div class="svc-url-row">
       <select id="svcNewDevice" title="所属设备" style="flex:0 0 auto;"><option value="SA">SA</option><option value="DS">DS</option><option value="Mage20">Mage20</option></select>
       <div class="proto-sw" style="flex:0 0 auto;">
@@ -2814,7 +2816,7 @@ function renderSvcConfig() {
           <div class="proto-sw-opt" onclick="setProto(this)">https</div>
         </div>
       </div>
-      <input id="svcNewHost" placeholder="host，如 YOUR_NAS_IP" style="flex:1;min-width:0;">
+      <input id="svcNewHost" placeholder="host，如 10.31.0.88" style="flex:1;min-width:0;">
       <input id="svcNewPort" placeholder="端口" style="width:80px;flex:0 0 80px;">
       <button class="svc-add-confirm" onclick="addSvc()">添加</button>
       <button class="svc-add-cancel" onclick="toggleAddSvc()">取消</button>
@@ -2851,7 +2853,7 @@ function renderSvcConfig() {
               <div class="proto-sw-opt${proto==='https'?' active':''}" onclick="setProto(this)">https</div>
             </div>
           </div>
-          <input id="svcAddr_${i}" value="${esc(host + ':' + a.port)}" placeholder="host:port，如 YOUR_NAS_IP:16062">
+          <input id="svcAddr_${i}" value="${esc(host + ':' + a.port)}" placeholder="host:port，如 10.31.0.88:16062">
           <button onclick="testSvc(${i}, this)" class="svc-test">测试</button>
         </div>
       </div>
@@ -4719,7 +4721,7 @@ async function fetchStatus() {
 
 function imgProxy(url) {
   if (!url) return '';
-  if (url.startsWith('http://YOUR_NAS_IP') || url.includes('doubanio.com') || url.includes('hdslb.com') || url.includes('//douban.com'))
+  if (url.startsWith('http://10.31.0.88') || url.includes('doubanio.com') || url.includes('hdslb.com') || url.includes('//douban.com'))
     return '/api/img?url=' + encodeURIComponent(url);
   return url;
 }
@@ -4848,11 +4850,12 @@ async function fetchApps() {
     strip.innerHTML = core.map(app => {
       const ok = app.status === 'online';
       return `
-      <div title="${esc(app.desc)} · ${esc(app.name)}" style="display:flex;align-items:center;gap:5px;padding:5px 11px;border-radius:16px;font-size:11px;font-weight:600;
-        background:${ok ? 'rgba(255,255,255,0.06)' : 'rgba(255,69,58,0.12)'};
-        border:1px solid ${ok ? 'rgba(255,255,255,0.08)' : 'rgba(255,69,58,0.25)'};
-        color:${ok ? 'rgba(255,255,255,0.7)' : '#FF6B60'};">
-        <span style="width:5px;height:5px;border-radius:50%;background:${ok ? '#30D158' : '#FF453A'};flex-shrink:0;"></span>
+      <div title="${esc(app.desc)} · ${esc(app.name)}" style="display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:14px;font-size:12px;font-weight:600;
+        background:${ok ? 'rgba(255,255,255,0.08)' : 'rgba(255,69,58,0.12)'};
+        border:1px solid ${ok ? 'rgba(255,255,255,0.1)' : 'rgba(255,69,58,0.25)'};
+        backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+        color:${ok ? 'rgba(255,255,255,0.85)' : '#FF6B60'};">
+        <span style="width:6px;height:6px;border-radius:50%;background:${ok ? '#30D158' : '#FF453A'};flex-shrink:0;box-shadow:0 0 6px ${ok ? 'rgba(48,209,88,0.6)' : 'rgba(255,69,58,0.6)'};"></span>
         ${esc(app.name)}
       </div>`;
     }).join('');
