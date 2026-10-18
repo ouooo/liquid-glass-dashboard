@@ -2843,8 +2843,8 @@ function renderSvcConfig() {
     <div class="svc-config-row">
       <div class="svc-body">
         <div class="svc-name-row"><span class="svc-ic">${a.icon || '📦'}</span><span class="svc-name">${esc(a.name)}</span><span class="svc-status ${a.status==='online'?'on':'off'}"></span><span class="svc-desc">${esc(a.desc)}</span></div>
-        <div class="svc-alias-row"><input id="svcAlias_${i}" value="${esc(alias)}" placeholder="可在此设置服务别名，例：xxx 的 Emby" style="flex:1;min-width:0;"></div>
         <div class="svc-url-row">
+          <input id="svcAlias_${i}" value="${esc(alias)}" placeholder="别名" style="width:120px;flex:0 0 120px;">
           <div class="proto-sw">
             <input type="hidden" id="svcProto_${i}" value="${proto}">
             <div class="proto-sw-tag" onclick="toggleProto(this)"><span class="proto-sw-val">${proto}</span><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -2876,8 +2876,8 @@ function renderSvcConfig() {
     <div class="svc-config-row svc-custom">
       <div class="svc-body">
         <div class="svc-name-row"><span class="svc-ic">${c.icon || '📦'}</span><input id="svcCName_${j}" value="${esc(c.name)}" class="svc-edit-name" placeholder="服务名称"><span class="svc-desc">${esc(c.desc || '自定义服务')}</span></div>
-        <div class="svc-alias-row"><input id="svcCAlias_${j}" value="${esc(c.alias || '')}" placeholder="可在此设置服务别名，例：xxx 的 Emby" style="flex:1;min-width:0;"></div>
         <div class="svc-url-row">
+          <input id="svcCAlias_${j}" value="${esc(c.alias || '')}" placeholder="别名" style="width:120px;flex:0 0 120px;">
           <select id="svcCDevice_${j}" title="所属设备">
             <option value="SA"${(c.device||'SA')==='SA'?' selected':''}>SA</option>
             <option value="DS"${(c.device||'')==='DS'?' selected':''}>DS</option>
@@ -3051,11 +3051,12 @@ function rbacRenderRoles() {
         return '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:5px 10px;font-size:12px;">👤 <span style="color:#fff;font-weight:600;">' + esc(u.username || '(未命名)') + '</span></div>';
       }
       return `
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:7px 10px;margin-bottom:6px;">
+      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:7px 10px;margin-bottom:6px;">
         <span style="font-size:12px;opacity:0.6;">👤</span>
-        <input id="rusr_name_${uid}" value="${esc(u.username)}" placeholder="用户名" style="flex:1;min-width:100px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;">
-        <input id="rusr_pass_${uid}" type="password" placeholder="${u.hasPass ? '留空不改密码' : '设置密码'}" style="width:140px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;">
-        <button onclick="rbacDelUser(${uid})" style="padding:4px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#FF453A;font-size:11px;cursor:pointer;">移除</button>
+        <input id="rusr_name_${uid}" value="${esc(u.username)}" placeholder="用户名" style="width:110px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;height:32px;box-sizing:border-box;">
+        <input id="rusr_pass_${uid}" type="password" placeholder="${u.hasPass ? '留空不改密码' : '设置密码'}" style="width:120px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;height:32px;box-sizing:border-box;">
+        <input id="rusr_pass2_${uid}" type="password" placeholder="确认密码" style="width:120px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;height:32px;box-sizing:border-box;">
+        <button onclick="rbacDelUser(${uid})" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#FF453A;font-size:11px;cursor:pointer;box-sizing:border-box;">移除</button>
       </div>`;
     }).join('');
     var cnt = window._rbacUsers.filter(function(u) { return u.role === r.name; }).length;
@@ -3165,12 +3166,13 @@ function rbacRenderUsers() {
   var html = orphans.map(function(o) {
     var u = o.u, uid = o.uid;
     return `
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.14);border-radius:8px;padding:8px 10px;">
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:rgba(255,255,255,0.04);border:1px dashed rgba(255,255,255,0.14);border-radius:8px;padding:8px 10px;">
       <span style="font-size:12px;opacity:0.6;">👤</span>
-      <input id="rusr_name_${uid}" value="${esc(u.username)}" placeholder="用户名" style="flex:1;min-width:120px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;">
-      <select id="rusr_role_${uid}" style="padding:0 26px 0 10px;"><option value="">未分配角色</option>${opts}</select>
-      <input id="rusr_pass_${uid}" type="password" placeholder="${u.hasPass ? '留空不改密码' : '设置密码'}" style="width:140px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;">
-      <button onclick="rbacDelUser(${uid})" style="padding:4px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#FF453A;font-size:11px;cursor:pointer;">移除</button>
+      <input id="rusr_name_${uid}" value="${esc(u.username)}" placeholder="用户名" style="width:110px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;height:32px;box-sizing:border-box;">
+      <select id="rusr_role_${uid}" style="padding:0 26px 0 10px;height:32px;"><option value="">未分配角色</option>${opts}</select>
+      <input id="rusr_pass_${uid}" type="password" placeholder="${u.hasPass ? '留空不改密码' : '设置密码'}" style="width:120px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;height:32px;box-sizing:border-box;">
+      <input id="rusr_pass2_${uid}" type="password" placeholder="确认密码" style="width:120px;padding:6px 9px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;height:32px;box-sizing:border-box;">
+      <button onclick="rbacDelUser(${uid})" style="height:32px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.08);color:#FF453A;font-size:11px;cursor:pointer;box-sizing:border-box;">移除</button>
     </div>`;
   }).join('');
   area.innerHTML = html || '<div style="font-size:12px;opacity:0.5;padding:6px 0;">未分配角色账号显示在这里 · 在角色卡片内点「+ 添加账号」即可把账号归入对应角色</div>';
@@ -3217,6 +3219,11 @@ function rbacCollect() {
     if (nEl) u.username = nEl.value.trim();
     if (rEl) u.role = rEl.value;
     u.password = (pEl && pEl.value) ? pEl.value : '';
+    var p2El = document.getElementById('rusr_pass2_' + idx);
+    if (u.password && p2El && pEl.value !== p2El.value) {
+      toast('用户 "' + u.username + '" 两次密码输入不一致', 'err');
+      return false;
+    }
   });
   // 门禁：检查角色名重复
   var roleNames = {};
