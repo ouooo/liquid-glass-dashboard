@@ -1361,7 +1361,9 @@ def tr_torrents(host, port, username='aoo', password='aa0772'):
                 return json.loads(rr.read().decode())
         # 第一段：快速取列表（不带 files，避免 19s 大响应拖慢 /api/torrents）
         base = _call({'fields': ['id', 'name', 'percentDone', 'rateDownload', 'rateUpload', 'seeders', 'sizeWhenDone', 'status']})
+        # 按速率降序排列，确保活跃种子排前面；取前15个展示
         torrents = (base.get('arguments') or {}).get('torrents', [])
+        torrents.sort(key=lambda t: (t.get('rateDownload',0) + t.get('rateUpload',0)), reverse=True)
         tops = torrents[:15]
         fmap = {}
         ids = [t.get('id') for t in tops if t.get('id') is not None][:8]
