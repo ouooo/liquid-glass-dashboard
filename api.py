@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env python3
+#!/usr/bin/env python3
 """NEXUS Dashboard 数据服务 v4 - 认证 + 安全加固"""
 
 import json
@@ -159,11 +159,11 @@ def load_config():
     return cfg
 
 CONFIG = load_config()
-EMBY_HOST = CONFIG['emby_host'].rstrip('/') or 'http://YOUR_NAS_IP:16880'
-EMBY_API_KEY = CONFIG['emby_api_key'] or 'YOUR_EMBY_API_KEY'
-QB_HOST = CONFIG['qb_host'].rstrip('/') or 'http://YOUR_NAS_IP:16058'
-QB_USER = CONFIG['qb_user'] or ''
-QB_PASS = CONFIG['qb_pass'] or 'YOUR_DOWNLOADER_PASSWORD'
+EMBY_HOST = CONFIG['emby_host'].rstrip('/') or 'http://10.31.0.88:16880'
+EMBY_API_KEY = CONFIG['emby_api_key'] or '76f3b50c02784b02b19fc56819de7e5d'
+QB_HOST = CONFIG['qb_host'].rstrip('/') or 'http://10.31.0.88:16058'
+QB_USER = CONFIG['qb_user'] or 'aoo'
+QB_PASS = CONFIG['qb_pass'] or 'aa0772'
 
 # ========== 认证与会话 ==========
 SESSIONS = {}  # token -> {username, role, expires}
@@ -252,7 +252,7 @@ def verify_password(password):
     return hashlib.sha256(password.encode()).hexdigest() == CONFIG['auth_password_hash']
 
 # ========== 脚本索引与运行状态 ==========
-SCRIPTS_DIR = os.environ.get('DASH_SCRIPTS_DIR', '/volume1/docker/scripts')
+SCRIPTS_DIR = os.environ.get('DASH_SCRIPTS_DIR', '')
 SCRIPT_RUNS_PATH = os.path.join(DATA_DIR, 'script_runs.json')
 SCRIPT_EXTS = ('.py', '.sh', '.bash')
 SCRIPT_SKIP_DIRS = {'__pycache__', '_archive', 'backup', '.git', '.ipynb_checkpoints'}
@@ -358,8 +358,8 @@ STATIC_EXT = ('.html', '.css', '.js', '.png', '.jpg', '.ico', '.svg', '.woff', '
 MP_DB = CONFIG.get('mp_db') or '/volume1/docker/mp/config/user.db'
 API_PORT = int(os.environ.get('DASH_API_PORT', CONFIG['port']))
 
-DS220_HOST = 'YOUR_DS220_IP'
-SA_HOST = 'YOUR_NAS_IP'
+DS220_HOST = '10.31.0.50'
+SA_HOST = '10.31.0.88'
 EMBY_USER_ID = '603301695e8c4db683563d8087fd71b7'  # 用户 m
 
 # ========== RBAC（角色权限 + 媒体范围） ==========
@@ -477,9 +477,9 @@ def http_get(url, timeout=5, headers=None):
         return None
 
 def _proxy_opener():
-    """经 YOUR_NAS_IP:16001 代理网关访问外网（NAS 直连境外站易被墙/超时）"""
+    """经 10.31.0.88:16001 代理网关访问外网（NAS 直连境外站易被墙/超时）"""
     import ssl
-    proxy = {'http': 'http://YOUR_NAS_IP:16001', 'https': 'http://YOUR_NAS_IP:16001'}
+    proxy = {'http': 'http://10.31.0.88:16001', 'https': 'http://10.31.0.88:16001'}
     return urllib.request.build_opener(urllib.request.ProxyHandler(proxy))
 
 def http_get_proxy(url, timeout=10, headers=None):
@@ -740,10 +740,10 @@ def get_memory_usage():
         return None
 
 def _classify_device(source):
-    """按挂载源识别存储所属设备：DS220(YOUR_DS220_IP)、Mage20/极空间(YOUR_OTHER_DEVICE_IP)、其余为 SA 本地。"""
-    if 'YOUR_DS220_IP' in source:
+    """按挂载源识别存储所属设备：DS220(10.31.0.50)、Mage20/极空间(10.31.0.129)、其余为 SA 本地。"""
+    if '10.31.0.50' in source:
         return 'DS'
-    if 'YOUR_OTHER_DEVICE_IP' in source:
+    if '10.31.0.129' in source:
         return 'Mage20'
     return 'SA'
 
@@ -794,7 +794,7 @@ def get_disk_usage():
 
 # 网络采样
 _net_cache = {'down': 0.0, 'up': 0.0}
-_DAY_FILE = '/tmp/net_day_base.json'
+_DAY_FILE = os.path.join(DATA_DIR, 'net_day_base.json')
 
 def _read_net_counters():
     rx = tx = 0
@@ -966,7 +966,7 @@ def pt_search(query, exclude=''):
             ctx.verify_mode = ssl.CERT_NONE
             if site['proxy']:
                 opener = urllib.request.build_opener(
-                    urllib.request.ProxyHandler({'https': 'http://YOUR_NAS_IP:16001', 'http': 'http://YOUR_NAS_IP:16001'}),
+                    urllib.request.ProxyHandler({'https': 'http://10.31.0.88:16001', 'http': 'http://10.31.0.88:16001'}),
                     urllib.request.HTTPSHandler(context=ctx))
             else:
                 opener = urllib.request.build_opener(urllib.request.HTTPSHandler(context=ctx))
@@ -1336,7 +1336,7 @@ def qb_transfer():
     return qb_request('/api/v2/transfer/info') or {}
 
 # ========== Transmission ==========
-def tr_torrents(host, port, username='', password='YOUR_DOWNLOADER_PASSWORD'):
+def tr_torrents(host, port, username='aoo', password='aa0772'):
     """Transmission RPC"""
     import base64
     try:
@@ -1400,7 +1400,7 @@ def qb_set_limits(dl_kb=None, up_kb=None):
     if up_kb is not None:
         qb_request('/api/v2/transfer/setUploadLimit?limit=' + str(int(up_kb)))
 
-def _tr_rpc(host, port, method, arguments, username='', password='YOUR_DOWNLOADER_PASSWORD'):
+def _tr_rpc(host, port, method, arguments, username='aoo', password='aa0772'):
     import base64
     try:
         url = f"http://{host}:{port}/transmission/rpc"
@@ -1425,7 +1425,7 @@ def _tr_rpc(host, port, method, arguments, username='', password='YOUR_DOWNLOADE
         print(f"[warn] tr rpc {host}:{port} {method}: {e}")
         return {}
 
-def tr_session_limits(host, port, username='', password='YOUR_DOWNLOADER_PASSWORD'):
+def tr_session_limits(host, port, username='aoo', password='aa0772'):
     """Transmission 会话限速，单位 KiB/s，附启用开关"""
     r = _tr_rpc(host, port, 'session-get',
                 {'fields': ['speed-limit-down', 'speed-limit-up',
@@ -1439,7 +1439,7 @@ def tr_session_limits(host, port, username='', password='YOUR_DOWNLOADER_PASSWOR
         'up_en': bool(a.get('speed-limit-up-enabled', False)),
     }
 
-def tr_set_limits(host, port, dl_kb=None, up_kb=None, username='', password='YOUR_DOWNLOADER_PASSWORD'):
+def tr_set_limits(host, port, dl_kb=None, up_kb=None, username='aoo', password='aa0772'):
     """设置 Transmission 会话限速（KiB/s，0=不限）"""
     args = {}
     if dl_kb is not None:
@@ -1494,7 +1494,7 @@ def carousel_trending(user_id=None):
     r = emby_get(f"/Items?SortBy=CommunityRating&SortOrder=Descending&IncludeItemTypes=Movie,Series&Recursive=true&Limit=5&Fields=Overview,Genres,RuntimeTicks,OfficialRating,CommunityRating&UserId={_uid(user_id)}")
     return _emby_carousel_items(r)
 
-TMDB_API_KEY = "YOUR_TMDB_API_KEY"
+TMDB_API_KEY = "db55323b8d3e4154498498a75642b381"
 
 def _tmdb_get(path):
     sep = '&' if '?' in path else '?'
@@ -1666,7 +1666,7 @@ def recent_transfers(limit=12, user_id=None):
 # ========== 服务状态 ==========
 def check_service(host, port, use_https=False, path='/'):
     """探测服务在线。不跟随重定向：任何 <500 的 HTTP 响应（200/301/302/401/403）都视为在线。
-    公网域名（your-domain.com）优先内网直连（hairpin 通常不通且慢）；直连失败后走代理网关兜底。"""
+    公网域名（ioom.top）优先内网直连（hairpin 通常不通且慢）；直连失败后走代理网关兜底。"""
     import http.client, ssl
     def _direct(h, u):
         ctx = None
@@ -1684,7 +1684,7 @@ def check_service(host, port, use_https=False, path='/'):
         conn.close()
         return code < 500
     # 公网域名优先内网直连：内网服务本身是 http（https 是公网 nginx TLS 层），用 http 探测内网 IP
-    candidates = [(SA_HOST, False), (host, use_https)] if host == 'your-domain.com' else [(host, use_https)]
+    candidates = [(SA_HOST, False), (host, use_https)] if host == 'ioom.top' else [(host, use_https)]
     for h, u in candidates:
         try:
             if _direct(h, u):
@@ -1707,17 +1707,17 @@ def check_service(host, port, use_https=False, path='/'):
 def get_services():
     """SA6400 + DS220+ 服务状态（端口已通过 docker ps + netstat 实测核实，支持 config.json 覆盖）"""
     services = [
-        {'name': 'Emby', 'host': SA_HOST, 'port': 16880, 'use_https': False, 'device': 'SA', 'desc': '媒体串流', 'icon': '🎬', 'public': 'https://your-domain.com:16881'},
-        {'name': 'MP', 'host': SA_HOST, 'port': 16995, 'use_https': False, 'device': 'SA', 'desc': '自动化整理', 'icon': '🤖', 'public': 'https://your-domain.com:16995'},
-        {'name': 'QB', 'host': SA_HOST, 'port': 16058, 'use_https': False, 'device': 'SA', 'desc': '下载客户端', 'icon': '⬇️', 'public': 'https://your-domain.com:16058'},
-        {'name': 'TR', 'host': SA_HOST, 'port': 16062, 'use_https': False, 'device': 'SA', 'desc': '下载客户端', 'icon': '📡', 'public': 'https://your-domain.com:16062'},
-        {'name': '代理', 'host': SA_HOST, 'port': 16001, 'use_https': False, 'device': 'SA', 'desc': '代理网关', 'icon': '🌐', 'public': 'http://your-domain.com:16001'},
-        {'name': '网盘搜索', 'host': SA_HOST, 'port': 18666, 'use_https': False, 'device': 'SA', 'desc': '网盘搜索', 'icon': '📦', 'public': 'http://your-domain.com:18666'},
+        {'name': 'Emby', 'host': SA_HOST, 'port': 16880, 'use_https': False, 'device': 'SA', 'desc': '媒体串流', 'icon': '🎬', 'public': 'https://ioom.top:16881'},
+        {'name': 'MP', 'host': SA_HOST, 'port': 16995, 'use_https': False, 'device': 'SA', 'desc': '自动化整理', 'icon': '🤖', 'public': 'https://ioom.top:16995'},
+        {'name': 'QB', 'host': SA_HOST, 'port': 16058, 'use_https': False, 'device': 'SA', 'desc': '下载客户端', 'icon': '⬇️', 'public': 'https://ioom.top:16058'},
+        {'name': 'TR', 'host': SA_HOST, 'port': 16062, 'use_https': False, 'device': 'SA', 'desc': '下载客户端', 'icon': '📡', 'public': 'https://ioom.top:16062'},
+        {'name': '代理', 'host': SA_HOST, 'port': 16001, 'use_https': False, 'device': 'SA', 'desc': '代理网关', 'icon': '🌐', 'public': 'http://ioom.top:16001'},
+        {'name': '网盘搜索', 'host': SA_HOST, 'port': 18666, 'use_https': False, 'device': 'SA', 'desc': '网盘搜索', 'icon': '📦', 'public': 'http://ioom.top:18666'},
         {'name': '面板', 'host': '127.0.0.1', 'port': 28080, 'use_https': False, 'device': 'SA', 'desc': '本面板', 'icon': '🖥️', 'public': ''},
-        {'name': '云盘挂载', 'host': SA_HOST, 'port': 16057, 'use_https': False, 'device': 'SA', 'desc': '网盘挂载', 'icon': '💾', 'public': 'https://your-domain.com:16057'},
-        {'name': 'AdGuard', 'host': SA_HOST, 'port': 18080, 'use_https': False, 'device': 'SA', 'desc': 'DNS 过滤', 'icon': '🛡️', 'public': 'http://your-domain.com:18080'},
-        {'name': 'IYUU', 'host': SA_HOST, 'port': 11311, 'use_https': False, 'device': 'SA', 'desc': '辅种', 'icon': '🌱', 'public': 'http://your-domain.com:11311'},
-        {'name': '有声书', 'host': SA_HOST, 'port': 16887, 'use_https': False, 'device': 'SA', 'desc': '有声书', 'icon': '📚', 'public': 'https://your-domain.com:16887'},
+        {'name': '云盘挂载', 'host': SA_HOST, 'port': 16057, 'use_https': False, 'device': 'SA', 'desc': '网盘挂载', 'icon': '💾', 'public': 'https://ioom.top:16057'},
+        {'name': 'AdGuard', 'host': SA_HOST, 'port': 18080, 'use_https': False, 'device': 'SA', 'desc': 'DNS 过滤', 'icon': '🛡️', 'public': 'http://ioom.top:18080'},
+        {'name': 'IYUU', 'host': SA_HOST, 'port': 11311, 'use_https': False, 'device': 'SA', 'desc': '辅种', 'icon': '🌱', 'public': 'http://ioom.top:11311'},
+        {'name': '有声书', 'host': SA_HOST, 'port': 16887, 'use_https': False, 'device': 'SA', 'desc': '有声书', 'icon': '📚', 'public': 'https://ioom.top:16887'},
         {'name': 'TR-DS', 'host': DS220_HOST, 'port': 16666, 'use_https': False, 'device': 'DS', 'desc': '下载客户端', 'icon': '🖥️', 'public': ''},
     ]
     # 用户自定义监控服务（config monitor_services，可增删改查）
@@ -2313,7 +2313,7 @@ class Handler(BaseHTTPRequestHandler):
 
         elif path == '/api/img':
             url = params.get('url', [''])[0]
-            allowed_hosts = ('YOUR_NAS_IP', 'doubanio.com', 'hdslb.com', 'douban.com', 'tmdb.org', 'image.tmdb.org')
+            allowed_hosts = ('10.31.0.88', 'doubanio.com', 'hdslb.com', 'douban.com', 'tmdb.org', 'image.tmdb.org')
             if not url or not any(h in url for h in allowed_hosts):
                 self.send_json({'error': 'bad url'}, code=400)
                 return
