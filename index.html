@@ -2815,10 +2815,54 @@ window._svcCustom = window._svcCustom || [];
 window._svcEditMode = window._svcEditMode || false;
 
 function toggleSvcEdit() {
+  // 如果是从编辑模式退出，先保存
+  if (window._svcEditMode) {
+    saveSvcConfig();
+  }
   window._svcEditMode = !window._svcEditMode;
   const btn = document.getElementById('svcEditBtn');
   if (btn) btn.textContent = window._svcEditMode ? '✓ 完成' : '✏️ 编辑';
   renderSvcConfig();
+}
+
+function saveSvcConfig() {
+  const updates = [];
+  (window._svcData || []).forEach((a, i) => {
+    const aliasEl = document.getElementById('svcAlias_' + i);
+    const protoEl = document.getElementById('svcProto_' + i);
+    const addrEl = document.getElementById('svcAddr_' + i);
+    if (!addrEl) return;
+    const proto = protoEl ? protoEl.value : 'http';
+    const addr = addrEl.value.trim();
+    const alias = aliasEl ? aliasEl.value.trim() : '';
+    if (addr) {
+      updates.push({
+        key: a.key || a.name,
+        url: proto + '://' + addr,
+        alias: alias
+      });
+    }
+  });
+  fetch('/api/config/services', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ services: updates })
+  }).then(r => r.json()).then(data => {
+    if (data.ok) {
+      toast('服务配置已保存');
+      // 更新本地数据
+      updates.forEach(u => {
+        const item = (window._svcData || []).find(s => (s.key || s.name) === u.key);
+        if (item) item.url = u.url;
+      });
+      (window._svcAliases = window._svcAliases || {});
+      updates.forEach(u => { window._svcAliases[u.key] = u.alias; });
+    } else {
+      toast('保存失败：' + (data.error || '未知错误'));
+    }
+  }).catch(err => {
+    toast('保存失败：' + err.message);
+  });
 }
 window._authEditMode = window._authEditMode || false;
 function toggleAuthEdit() {
