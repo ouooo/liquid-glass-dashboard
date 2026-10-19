@@ -1703,9 +1703,10 @@
             <div class="poster-overlay-meta" id="overlayMeta">2021 · 动作 / 冒险</div>
             <div class="poster-overlay-overview" id="overlayOverview"></div>
           </div>
-          <div id="heroDots" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:15;align-items:center;"></div>
         </div>
       </div>
+      <!-- 轮播指示器：移动端在卡片外侧下边，宽屏在右下角 -->
+      <div id="heroDots" style="display:flex;gap:5px;align-items:center;justify-content:center;overflow-x:auto;scrollbar-width:none;padding:8px 16px;max-width:100%;"></div>
 
       <!-- 系统状态 五卡片 -->
       <div class="ov-col ov-col-health">
@@ -2870,9 +2871,9 @@ function renderSvcConfig() {
           </div>
           <input id="svcAddr_${i}" value="${esc(host + ':' + a.port)}" placeholder="host:port，如 10.31.0.88:16062">
           <button onclick="testSvc(${i}, this)" class="svc-test">测试</button>
+          <button onclick="removeBuiltinSvc(${i})" title="隐藏此服务" class="svc-del">✕</button>
         </div>
       </div>
-      <button onclick="removeBuiltinSvc(${i})" title="隐藏此服务" class="svc-del">✕</button>
     </div>`;
   });
   (window._svcCustom || []).forEach((c, j) => {
@@ -2916,7 +2917,7 @@ function renderSvcConfig() {
   list.innerHTML = html;
 }
 
-function toggleProto(el) { el.classList.toggle('open'); }
+function toggleProto(el) { el.closest('.proto-sw').classList.toggle('open'); }
 function setProto(opt) {
   const sw = opt.closest('.proto-sw');
   const v = opt.textContent.trim();
