@@ -1706,7 +1706,11 @@
         </div>
       </div>
       <!-- 轮播指示器：移动端在卡片外侧下边，宽屏在右下角 -->
-      <div id="heroDots" style="display:flex;gap:5px;align-items:center;justify-content:center;overflow-x:auto;scrollbar-width:none;padding:8px 16px;max-width:100%;"></div>
+      <div id="heroDotsWrap" style="position:relative;display:flex;align-items:center;margin:4px 0 12px;">
+        <div id="heroDotsFadeL" style="position:absolute;left:0;top:0;bottom:0;width:24px;background:linear-gradient(90deg, rgba(0,0,0,0.35), transparent);pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:2;"></div>
+        <div id="heroDots" style="display:flex;gap:5px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:8px 24px;flex:1;-webkit-overflow-scrolling:touch;"></div>
+        <div id="heroDotsFadeR" style="position:absolute;right:0;top:0;bottom:0;width:24px;background:linear-gradient(-90deg, rgba(0,0,0,0.35), transparent);pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:2;"></div>
+      </div>
 
       <!-- 系统状态 五卡片 -->
       <div class="ov-col ov-col-health">
@@ -4080,15 +4084,9 @@ function updateSlideInfo(index) {
   // 简介
   const ov = document.getElementById('overlayOverview');
   if (ov) ov.textContent = (slide.overview || '').replace(/\s+/g, ' ').trim();
-  // 指示器圆点（可横向滚动，当前项自动居中）
+  // 指示器圆点（可横向滚动，当前项自动居中，左右遮罩）
   const dots = document.getElementById('heroDots');
   if (dots) {
-    dots.style.display = 'flex';
-    dots.style.gap = '5px';
-    dots.style.overflowX = 'auto';
-    dots.style.scrollbarWidth = 'none';
-    dots.style.maxWidth = '80vw';
-    dots.style.padding = '4px 0';
     dots.innerHTML = CONFIG.slides.map(function(_, i) {
       var active = i === index;
       return '<span onclick="goToSlide(' + i + ')" style="flex-shrink:0;width:' + (active ? '22px' : '8px') + ';height:6px;border-radius:3px;background:rgba(255,255,255,' + (active ? '1' : '0.45') + ');box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:all 0.3s;cursor:pointer;"></span>';
@@ -4099,7 +4097,21 @@ function updateSlideInfo(index) {
       var center = activeDot.offsetLeft - dots.offsetWidth / 2 + activeDot.offsetWidth / 2;
       dots.scrollTo({ left: center, behavior: 'smooth' });
     }
+    // 更新左右遮罩
+    setTimeout(updateDotsFade, 350);
   }
+}
+function updateDotsFade() {
+  var dots = document.getElementById('heroDots');
+  if (!dots) return;
+  var fadeL = document.getElementById('heroDotsFadeL');
+  var fadeR = document.getElementById('heroDotsFadeR');
+  if (fadeL) fadeL.style.opacity = dots.scrollLeft > 4 ? '1' : '0';
+  if (fadeR) fadeR.style.opacity = (dots.scrollLeft + dots.clientWidth < dots.scrollWidth - 4) ? '1' : '0';
+}
+document.addEventListener('DOMContentLoaded', function() {
+  var dots = document.getElementById('heroDots');
+  if (dots) dots.addEventListener('scroll', updateDotsFade);
 }
 
 // ========== 下载器限速 ==========
