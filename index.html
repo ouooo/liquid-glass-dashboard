@@ -4034,6 +4034,14 @@ async function prevSlide() {
   _applySlide(next, target);
 }
 
+async function goToSlide(i) {
+  if (!CONFIG.slides || !CONFIG.slides.length) return;
+  if (i === currentSlide) return;
+  const next = CONFIG.slides[i];
+  await preloadImage(next.poster);
+  _applySlide(next, i);
+}
+
 // ===== 轮播手势：左右滑动手动切换当前组内图片（触屏 + 鼠标拖拽） =====
 let _heroPX = 0, _heroPY = 0, _heroDrag = false, _heroSwiped = false;
 const _heroCar = document.getElementById('heroCarousel');
@@ -4071,12 +4079,25 @@ function updateSlideInfo(index) {
   // 简介
   const ov = document.getElementById('overlayOverview');
   if (ov) ov.textContent = (slide.overview || '').replace(/\s+/g, ' ').trim();
-  // 指示器圆点
+  // 指示器圆点（可横向滚动，当前项自动居中）
   const dots = document.getElementById('heroDots');
   if (dots) {
+    dots.style.display = 'flex';
+    dots.style.gap = '5px';
+    dots.style.overflowX = 'auto';
+    dots.style.scrollbarWidth = 'none';
+    dots.style.maxWidth = '80vw';
+    dots.style.padding = '4px 0';
     dots.innerHTML = CONFIG.slides.map(function(_, i) {
-      return '<span style="width:' + (i === index ? '22px' : '8px') + ';height:6px;border-radius:3px;background:rgba(255,255,255,' + (i === index ? '1' : '0.45') + ');box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:all 0.3s;"></span>';
+      var active = i === index;
+      return '<span onclick="goToSlide(' + i + ')" style="flex-shrink:0;width:' + (active ? '22px' : '8px') + ';height:6px;border-radius:3px;background:rgba(255,255,255,' + (active ? '1' : '0.45') + ');box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:all 0.3s;cursor:pointer;"></span>';
     }).join('');
+    // 当前项自动居中
+    var activeDot = dots.children[index];
+    if (activeDot) {
+      var center = activeDot.offsetLeft - dots.offsetWidth / 2 + activeDot.offsetWidth / 2;
+      dots.scrollTo({ left: center, behavior: 'smooth' });
+    }
   }
 }
 
@@ -5319,14 +5340,19 @@ function openDetail(id) {
 
     // 四个操作按钮（搜资源 / 字幕 / 订阅 / 收藏）
     var _isFav = (_favs || []).some(function(f) { return String(f.id) === String(d.id); });
-    var _favIcon = _isFav ? '★' : '☆';
+    var _favColor = _isFav ? '#FFD60A' : '#0a0a0a';
+    var _favFill = _isFav ? 'currentColor' : 'none';
     var _favLabel = _isFav ? '已收藏' : '收藏';
+    const _sIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    const _cIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+    const _hIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+    const _starIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="' + _favFill + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
     const actionBtns = `
       <div class="detail-actions" style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button onclick="alert('搜索资源：' + '${esc(d.name)}')" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">🔍 搜资源</button>
-        <button onclick="alert('搜索字幕：' + '${esc(d.name)}')" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">💬 字幕</button>
-        <button onclick="alert('订阅：' + '${esc(d.name)}')" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">♡ 订阅</button>
-        <button onclick="toggleFav({id:'${esc(d.id)}',type:${d.type === 'Series' ? '"Series"' : '"Movie"'},title:'${esc(d.name)}',year:'${esc(d.year || '')}',poster:'${esc(d.poster || d.backdrop || '')}',rating:'${esc(d.rating || '')}'})" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">${_favIcon} ${_favLabel}</button>
+        <button onclick="alert('搜索资源：' + '${esc(d.name)}')" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">${_sIcon} 搜资源</button>
+        <button onclick="alert('搜索字幕：' + '${esc(d.name)}')" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">${_cIcon} 字幕</button>
+        <button onclick="alert('订阅：' + '${esc(d.name)}')" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:#0a0a0a;cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">${_hIcon} 订阅</button>
+        <button onclick="toggleFav({id:'${esc(d.id)}',type:${d.type === 'Series' ? '"Series"' : '"Movie"'},title:'${esc(d.name)}',year:'${esc(d.year || '')}',poster:'${esc(d.poster || d.backdrop || '')}',rating:'${esc(d.rating || '')}'})" style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:10px;border:none;background:#fff;color:${_favColor};cursor:pointer;font-size:12px;font-weight:600;white-space:nowrap;">${_starIcon} ${_favLabel}</button>
       </div>`;
 
     modal.innerHTML = `
@@ -5373,7 +5399,7 @@ function openDetail(id) {
                     var pct = Math.max(0, Math.min(100, (parseFloat(d.rating) / 10) * 100));
                     return `<div style="text-align:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);position:relative;display:inline-block;width:100%;box-sizing:border-box;">
                       <div style="position:relative;font-size:22px;letter-spacing:2px;line-height:1;">
-                        <span style="color:rgba(255,255,255,0.18);">☆☆☆☆☆</span>
+                        <span style="color:rgba(255,255,255,0.18);">★★★★★</span>
                         <span style="position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:#FFD60A;width:${pct}%;">★★★★★</span>
                       </div>
                       <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">${d.rating} / 10</div>
