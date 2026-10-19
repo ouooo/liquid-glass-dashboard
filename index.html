@@ -5395,15 +5395,23 @@ function openDetail(id) {
               <div>
                 <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px;height:fit-content;">
                   ${d.rating ? (function(){
-                    // SVG 精确评分条：5颗星，按百分比裁剪
+                    // SVG 精确评分条：底层灰星，上层黄星按百分比裁剪
                     var pct = Math.max(0, Math.min(100, (parseFloat(d.rating) / 10) * 100));
-                    var starSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+                    var W = 22, GAP = 3; // 每颗星宽 + 间距
+                    var totalW = W * 5 + GAP * 4;
+                    var starPath = 'M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z';
+                    function starRow(color) {
+                      var svgs = '';
+                      for (var i = 0; i < 5; i++) {
+                        var x = i * (W + GAP);
+                        svgs += '<svg x="' + x + '" y="0" width="' + W + '" height="' + W + '" viewBox="0 0 24 24" fill="' + color + '"><path d="' + starPath + '"/></svg>';
+                      }
+                      return '<svg width="' + totalW + '" height="' + W + '" viewBox="0 0 ' + totalW + ' ' + W + '">' + svgs + '</svg>';
+                    }
                     return `<div style="text-align:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                      <div style="position:relative;display:inline-block;height:20px;line-height:0;">
-                        <div style="display:flex;gap:2px;color:rgba(255,255,255,0.18);">${starSvg.repeat(5)}</div>
-                        <div style="position:absolute;top:0;left:0;overflow:hidden;white-space:nowrap;color:#FFD60A;width:${pct}%;">
-                          <div style="display:flex;gap:2px;">${starSvg.repeat(5)}</div>
-                        </div>
+                      <div style="position:relative;display:inline-block;">
+                        <div style="color:rgba(255,255,255,0.18);">${starRow('rgba(255,255,255,0.18)')}</div>
+                        <div style="position:absolute;top:0;left:0;overflow:hidden;width:${pct}%;color:#FFD60A;">${starRow('#FFD60A')}</div>
                       </div>
                       <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;">${d.rating} / 10</div>
                     </div>`;
