@@ -1,5 +1,5 @@
 // NEXUS Dashboard Service Worker
-const CACHE_NAME = 'nexus-v1';
+const CACHE_NAME = 'nexus-v2';
 const ASSETS = ['/', '/manifest.json', '/logo-teal-1.png'];
 
 self.addEventListener('install', e => {
