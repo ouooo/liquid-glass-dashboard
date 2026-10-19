@@ -1280,7 +1280,7 @@
     .more-item:active { background:rgba(255,255,255,0.1); }
     .more-item .icon { font-size:18px; }
     #moreOverlay {
-      display:none; position:fixed; inset:0; z-index:98; background:transparent;
+      display:none; position:fixed; inset:0; z-index:200; background:transparent;
     }
     #moreOverlay.show { display:block; }
     .top-row {
@@ -2604,6 +2604,7 @@ document.querySelectorAll('.more-item').forEach(item => {
 });
 
 function switchPage(pageName) {
+  closeMoreDrawer();
   const targetPage = document.getElementById('page-' + pageName);
   if (!targetPage) return;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
