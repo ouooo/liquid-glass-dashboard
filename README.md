@@ -6,7 +6,6 @@ Liquid Glass 风格 NAS 监控仪表盘,深色半透明玻璃拟态 UI,接入真
 
 - 🎨 **Liquid Glass 风格** - 深色背景 + backdrop-filter 半透明玻璃卡片,细腻边框高光
 - 📊 **实时系统监控** - CPU / 内存 / 网络速率 / 存储池容量
-- 📊 **实时系统监控** - CPU / 内存 / 网络速率 / 存储池容量
 - 🎬 **媒体库统计** - Emby 电影 / 剧集 / 音乐真实数量
 - ⬇️ **下载器监控** - qBittorrent 种子列表 / 上传下载速度
 - 🖥️ **服务状态** - Emby / MoviePilot / qBittorrent / Transmission 健康检查
