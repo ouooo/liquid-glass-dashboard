@@ -250,11 +250,11 @@
   }
   .msg-panel {
     position:absolute; top:40px; right:0; width:320px; max-width:78vw;
-    background: linear-gradient(145deg, rgba(20,22,30,0.72) 0%, rgba(15,17,24,0.78) 45%, rgba(12,14,20,0.82) 100%);
-    backdrop-filter: blur(20px) saturate(1.3);
-    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
+    backdrop-filter: blur(15px) saturate(1.3);
+    -webkit-backdrop-filter: blur(15px) saturate(1.3);
     border:1px solid rgba(255,255,255,0.13); border-radius:14px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 40px rgba(0,0,0,0.45);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 40px rgba(0,0,0,0.45);
     display:none; z-index:2000; overflow:hidden;
   }
   .msg-panel-head {
@@ -308,13 +308,13 @@
   /* 搜索下拉菜单 */
   .search-dropdown {
     position:absolute; top:calc(100% + 8px); left:0; z-index:100;
-    background: linear-gradient(145deg, rgba(20,22,30,0.72) 0%, rgba(15,17,24,0.78) 45%, rgba(12,14,20,0.82) 100%);
-    backdrop-filter: blur(20px) saturate(1.3);
-    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
+    backdrop-filter: blur(15px) saturate(1.3);
+    -webkit-backdrop-filter: blur(15px) saturate(1.3);
     border:1px solid rgba(255,255,255,0.13);
     border-radius:14px; padding:8px;
     min-width:200px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 40px rgba(0,0,0,0.45);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 40px rgba(0,0,0,0.45);
     display:none;
   }
   .search-dropdown.show { display:block; }
@@ -329,12 +329,12 @@
   .hero-source-switch:hover { opacity:1; background:rgba(255,255,255,0.15); }
   .hero-source-dropdown {
     position:absolute; z-index:100;
-    background: linear-gradient(145deg, rgba(20,22,30,0.72) 0%, rgba(15,17,24,0.78) 45%, rgba(12,14,20,0.82) 100%);
-    backdrop-filter: blur(20px) saturate(1.3);
-    -webkit-backdrop-filter: blur(20px) saturate(1.3);
+    background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
+    backdrop-filter: blur(15px) saturate(1.3);
+    -webkit-backdrop-filter: blur(15px) saturate(1.3);
     border:1px solid rgba(255,255,255,0.13);
     border-radius:14px; padding:8px; min-width:180px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 40px rgba(0,0,0,0.45);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 40px rgba(0,0,0,0.45);
     display:none;
     margin-top:4px;
   }
@@ -1538,9 +1538,9 @@
     .section-title h3, .card-header h3 { font-size: 15px; font-weight: 600; letter-spacing: 0; } /* Title 3 */
     .page-title p, .breadcrumb, .hero-media .meta { font-size: 12px; }     /* Callout */
     /* 宽屏补齐：所有继承 body 17px 的小字元素 */
-    .msg-item { font-size: 13px; }
-    .msg-item .mi-text { font-size: 13px; }
-    .msg-item .mi-time { font-size: 11px; }
+    .msg-item { font-size: 12px; }
+    .msg-item .mi-text { font-size: 12px; }
+    .msg-item .mi-time { font-size: 10px; }
     .toast, .toast-text { font-size: 13px; }
     .torrent-item { font-size: 13px; }
     .search-dropdown-item { font-size: 13px; }
@@ -1864,7 +1864,7 @@
           </div>
         </div>
         <div class="view-all">
-          <a>查看全部数据活动 →</a>
+          <a onclick="switchPage('transfers')" style="cursor:pointer;">查看全部数据活动 →</a>
         </div>
       </div>
       </div><!-- /ov-col -->
@@ -1881,7 +1881,7 @@
         <div class="glass-card">
           <div class="card-header">
             <h4><span class="h-icon">📚</span> 媒体库</h4>
-            <a class="manage-link">浏览 →</a>
+            <a class="manage-link" onclick="switchPage('media')" style="cursor:pointer;">浏览 →</a>
           </div>
           <div class="lib-stats">
             <div class="lib-stat">
@@ -2408,7 +2408,7 @@
         <p style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:14px;">输入 emoji（如 🏠）或图片 URL，控制浏览器标签页左侧的标识，保存后生效</p>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <input id="cfgFavicon" oninput="faviconLive(this.value)" placeholder="例：🏠 或 https://example.com/favicon.png" style="flex:1;min-width:200px;padding:9px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.15);background:rgba(0,0,0,0.25);color:#fff;font-size:13px;box-sizing:border-box;">
-          <span id="faviconPreview" style="font-size:20px;width:28px;text-align:center;">◈</span>
+          <span id="faviconPreview" style="font-size:20px;width:28px;text-align:center;opacity:0.3;"></span>
         </div>
       </div>
 
@@ -2715,9 +2715,9 @@ async function loadSettings() {
       const list = document.getElementById('volumeAliasList');
       if (sdata && sdata.pools) {
         list.innerHTML = sdata.pools.map((p, i) => `
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:12px;font-family:monospace;opacity:0.5;min-width:140px;">${p.mount}</span>
-            <input id="volAlias_${i}" data-mount="${p.mount}" value="${esc(aliases[p.mount] || '')}" placeholder="例：存储空间1" style="flex:1;padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:12px;font-family:monospace;opacity:0.5;min-width:120px;">${p.mount}</span>
+            <input id="volAlias_${i}" data-mount="${p.mount}" value="${esc(aliases[p.mount] || '')}" placeholder="例：存储空间1" style="flex:1;min-width:140px;height:32px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;box-sizing:border-box;">
           </div>`).join('');
         window._volPools = sdata.pools;
       }
@@ -4398,7 +4398,13 @@ async function fetchJSON(path, timeoutMs) {
     clearTimeout(timer);
     delete _activeRequests[reqId];
     if (e.name === 'AbortError') {
-      if (!_suppressToasts) toast('请求超时(' + Math.round(timeoutMs/1000) + 's)，服务器可能繁忙或正在执行长时间搜索，请稍后重试', 'error');
+      if (!_suppressToasts) {
+        var _now = Date.now();
+        if (_now - _lastTimeoutToast > 30000) {
+          _lastTimeoutToast = _now;
+          toast('请求超时(' + Math.round(timeoutMs/1000) + 's)，服务器可能繁忙或正在执行长时间搜索，请稍后重试', 'error');
+        }
+      }
     } else {
       if (!_suppressToasts) toast('网络请求失败：' + (e.message || '未知错误'), 'error');
     }
@@ -4957,6 +4963,7 @@ async function fetchTorrents() {
 
 var _consecutiveFailures = 0;
 var _lastFailToast = 0;
+var _lastTimeoutToast = 0;
 
 async function fetchAllData() {
   // 仅拉当前用户有权限的端点，避免无权限请求刷屏
