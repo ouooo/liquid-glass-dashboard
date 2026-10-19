@@ -250,12 +250,12 @@
   }
   .msg-panel {
     position:absolute; top:40px; right:0; width:320px; max-width:78vw;
-    background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
-    backdrop-filter: blur(15px) saturate(1.3);
-    -webkit-backdrop-filter: blur(15px) saturate(1.3);
+    background: linear-gradient(145deg, rgba(40,42,55,0.88) 0%, rgba(30,32,44,0.92) 45%, rgba(25,27,38,0.95) 100%);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
     border:1px solid rgba(255,255,255,0.13); border-radius:14px;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 40px rgba(0,0,0,0.45);
-    display:none; z-index:2000; overflow:hidden;
+    display:none; z-index:2000;
   }
   .msg-panel-head {
     display:flex; justify-content:space-between; align-items:center;
@@ -266,7 +266,7 @@
     border:none; background:rgba(255,255,255,0.1); color:#fff; font-size:11px;
     padding:4px 10px; border-radius:8px; cursor:pointer;
   }
-  .msg-list { max-height:320px; overflow-y:auto; padding:6px 0; }
+  .msg-list { max-height:320px; overflow-y:auto; padding:6px 0; border-radius:0 0 14px 14px; }
   .msg-item {
     display:flex; gap:8px; align-items:flex-start; padding:8px 14px; font-size:10px;
     border-bottom:1px solid rgba(255,255,255,0.05);
@@ -308,9 +308,9 @@
   /* 搜索下拉菜单 */
   .search-dropdown {
     position:absolute; top:calc(100% + 8px); left:0; z-index:100;
-    background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
-    backdrop-filter: blur(15px) saturate(1.3);
-    -webkit-backdrop-filter: blur(15px) saturate(1.3);
+    background: linear-gradient(145deg, rgba(40,42,55,0.88) 0%, rgba(30,32,44,0.92) 45%, rgba(25,27,38,0.95) 100%);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
     border:1px solid rgba(255,255,255,0.13);
     border-radius:14px; padding:8px;
     min-width:200px;
@@ -329,9 +329,9 @@
   .hero-source-switch:hover { opacity:1; background:rgba(255,255,255,0.15); }
   .hero-source-dropdown {
     position:absolute; z-index:100;
-    background: linear-gradient(145deg, rgba(255,255,255,0.11) 0%, rgba(255,255,255,0.045) 45%, rgba(255,255,255,0.025) 100%);
-    backdrop-filter: blur(15px) saturate(1.3);
-    -webkit-backdrop-filter: blur(15px) saturate(1.3);
+    background: linear-gradient(145deg, rgba(40,42,55,0.88) 0%, rgba(30,32,44,0.92) 45%, rgba(25,27,38,0.95) 100%);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
     border:1px solid rgba(255,255,255,0.13);
     border-radius:14px; padding:8px; min-width:180px;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 40px rgba(0,0,0,0.45);
@@ -1906,7 +1906,7 @@
         <div class="glass-card">
           <div class="card-header">
             <h4><span class="h-icon">⚙️</span> 家庭服务</h4>
-            <a class="manage-link">管理 →</a>
+            <a class="manage-link" onclick="switchPage('settings')" style="cursor:pointer;">管理 →</a>
           </div>
           <div class="services-grid">
             <div class="service-item">
@@ -2651,7 +2651,7 @@ function applyFavicon(v) {
 }
 function faviconLive(v) {
   var pv = document.getElementById('faviconPreview');
-  if (pv) pv.textContent = (/^https?:\/\//i.test(v)) ? '🔗' : (v || '◈');
+  if (pv) pv.textContent = (/^https?:\/\//i.test(v)) ? '🔗' : v;
 }
 
 async function loadSettings() {
@@ -2717,7 +2717,7 @@ async function loadSettings() {
         list.innerHTML = sdata.pools.map((p, i) => `
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <span style="font-size:12px;font-family:monospace;opacity:0.5;min-width:120px;">${p.mount}</span>
-            <input id="volAlias_${i}" data-mount="${p.mount}" value="${esc(aliases[p.mount] || '')}" placeholder="例：存储空间1" style="flex:1;min-width:140px;height:32px;padding:0 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;box-sizing:border-box;">
+            <input id="volAlias_${i}" data-mount="${p.mount}" value="${esc(aliases[p.mount] || '')}" placeholder="例：存储空间1" style="flex:1;min-width:140px;height:32px;padding:0 10px;margin-right:4px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.25);color:#fff;font-size:12px;box-sizing:border-box;">
           </div>`).join('');
         window._volPools = sdata.pools;
       }
