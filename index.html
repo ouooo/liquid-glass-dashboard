@@ -1700,7 +1700,7 @@
             <div class="poster-overlay-meta" id="overlayMeta">2021 · 动作 / 冒险</div>
             <div class="poster-overlay-overview" id="overlayOverview"></div>
           </div>
-          <div id="heroDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;"></div>
+          <div id="heroDots" style="position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:5px;z-index:15;align-items:center;"></div>
         </div>
       </div>
 
@@ -2655,8 +2655,7 @@ function faviconLive(v) {
   if (pv) {
     var txt = (/^https?:\/\//i.test(v)) ? '🔗' : v;
     pv.textContent = txt;
-    pv.style.width = txt ? '28px' : '0';
-    pv.style.opacity = txt ? '0.7' : '0';
+    pv.style.display = txt ? '' : 'none';
   }
 }
 
@@ -4072,7 +4071,7 @@ function updateSlideInfo(index) {
   const dots = document.getElementById('heroDots');
   if (dots) {
     dots.innerHTML = CONFIG.slides.map(function(_, i) {
-      return '<span style="width:' + (i === index ? '18px' : '6px') + ';height:6px;border-radius:3px;background:rgba(255,255,255,' + (i === index ? '0.9' : '0.35') + ');transition:all 0.3s;"></span>';
+      return '<span style="width:' + (i === index ? '22px' : '8px') + ';height:6px;border-radius:3px;background:rgba(255,255,255,' + (i === index ? '1' : '0.45') + ');box-shadow:0 1px 4px rgba(0,0,0,0.3);transition:all 0.3s;"></span>';
     }).join('');
   }
 }
@@ -5408,7 +5407,7 @@ initSetTabs();
 </script>
 
 <!-- 返回顶部 -->
-<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:calc(90px + env(safe-area-inset-bottom, 0px));right:16px;z-index:300;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);color:#fff;font-size:18px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);">↑</button>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:calc(110px + env(safe-area-inset-bottom, 0px));right:16px;z-index:300;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);color:#fff;font-size:18px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);">↑</button>
 <script>
 window.addEventListener('scroll', function() {
   var btn = document.getElementById('backToTop');
