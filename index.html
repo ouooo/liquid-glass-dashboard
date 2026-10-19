@@ -1353,54 +1353,6 @@
     .carousel-card {
       min-height: 300px;
     }
-    /* 蓝光包装盒样式 */
-    .blu-ray-case {
-      position: relative;
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow:
-        -2px 0 0 rgba(0,0,0,0.3),
-        4px 6px 16px rgba(0,0,0,0.4),
-        inset 1px 0 0 rgba(255,255,255,0.15),
-        inset 2px 0 0 rgba(0,0,0,0.2);
-    }
-    .blu-ray-case::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; bottom: 0;
-      width: 8px;
-      background: linear-gradient(90deg,
-        rgba(0,0,0,0.5) 0%,
-        rgba(0,0,0,0.3) 30%,
-        rgba(255,255,255,0.1) 50%,
-        rgba(0,0,0,0.3) 70%,
-        rgba(0,0,0,0.5) 100%);
-      z-index: 2;
-    }
-    .blu-ray-case::after {
-      content: '';
-      position: absolute;
-      top: 0; left: 8px; right: 0;
-      height: 24px;
-      background: linear-gradient(180deg,
-        #1a3a6b 0%,
-        #2a5a9b 50%,
-        #1a3a6b 100%);
-      border-bottom: 1px solid rgba(255,255,255,0.2);
-      z-index: 2;
-      pointer-events: none;
-    }
-    .blu-ray-case .br-logo {
-      position: absolute;
-      top: 4px; left: 14px;
-      z-index: 3;
-      font-size: 10px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 0.5px;
-      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-      pointer-events: none;
-    }
     /* ===== 对齐 App Store / iOS HIG 排版规范（Dynamic Type + SF Pro）===== */
     body {
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
@@ -5411,7 +5363,7 @@ function openDetail(id) {
           <button onclick="closeDetail()" style="position:fixed;top:20px;right:20px;z-index:20;background:rgba(0,0,0,0.4);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.15);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;">✕</button>
           <!-- 顶部标题区 -->
           <div style="max-width:1100px;margin:0 auto;padding:44px 24px 20px;display:flex;gap:24px;align-items:flex-end;" class="detail-top">
-            ${d.poster ? `<div style="position:relative;flex-shrink:0;" class="blu-ray-case"><span class="br-logo">BLU-RAY</span><img src="${imgProxy(d.poster)}" style="width:140px;display:block;">${d.inLibrary ? '<span style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:600;background:rgba(48,209,88,0.85);color:#fff;padding:2px 8px;border-radius:4px;z-index:4;">✅ 已入库</span>' : ''}</div>` : ''}
+            ${d.poster ? `<div style="position:relative;flex-shrink:0;"><img src="${imgProxy(d.poster)}" style="width:140px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.2);">${d.inLibrary ? '<span style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;font-weight:600;background:rgba(48,209,88,0.85);color:#fff;padding:2px 8px;border-radius:4px;">✅ 已入库</span>' : ''}</div>` : ''}
             <div style="padding-bottom:4px;flex:1;">
               <h1 style="font-size:24px;font-weight:800;margin-bottom:8px;text-shadow:0 1px 4px rgba(0,0,0,0.3);line-height:1.25;">${esc(d.name)} ${d.year ? `<span style="color:rgba(255,255,255,0.5);font-weight:400;">(${d.year})</span>` : ''}</h1>
               <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:10px;">
