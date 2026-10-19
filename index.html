@@ -1700,6 +1700,7 @@
             <div class="poster-overlay-meta" id="overlayMeta">2021 · 动作 / 冒险</div>
             <div class="poster-overlay-overview" id="overlayOverview"></div>
           </div>
+          <div id="heroDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:5;"></div>
         </div>
       </div>
 
@@ -2651,7 +2652,12 @@ function applyFavicon(v) {
 }
 function faviconLive(v) {
   var pv = document.getElementById('faviconPreview');
-  if (pv) pv.textContent = (/^https?:\/\//i.test(v)) ? '🔗' : v;
+  if (pv) {
+    var txt = (/^https?:\/\//i.test(v)) ? '🔗' : v;
+    pv.textContent = txt;
+    pv.style.width = txt ? '28px' : '0';
+    pv.style.opacity = txt ? '0.7' : '0';
+  }
 }
 
 async function loadSettings() {
@@ -4062,6 +4068,13 @@ function updateSlideInfo(index) {
   // 简介
   const ov = document.getElementById('overlayOverview');
   if (ov) ov.textContent = (slide.overview || '').replace(/\s+/g, ' ').trim();
+  // 指示器圆点
+  const dots = document.getElementById('heroDots');
+  if (dots) {
+    dots.innerHTML = CONFIG.slides.map(function(_, i) {
+      return '<span style="width:' + (i === index ? '18px' : '6px') + ';height:6px;border-radius:3px;background:rgba(255,255,255,' + (i === index ? '0.9' : '0.35') + ');transition:all 0.3s;"></span>';
+    }).join('');
+  }
 }
 
 // ========== 下载器限速 ==========
@@ -5395,7 +5408,7 @@ initSetTabs();
 </script>
 
 <!-- 返回顶部 -->
-<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:90px;right:16px;z-index:300;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);color:#fff;font-size:18px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);">↑</button>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="display:none;position:fixed;bottom:calc(90px + env(safe-area-inset-bottom, 0px));right:16px;z-index:300;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,0.18);background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);color:#fff;font-size:18px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.2);">↑</button>
 <script>
 window.addEventListener('scroll', function() {
   var btn = document.getElementById('backToTop');
