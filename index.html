@@ -18,7 +18,7 @@
     color: #f0f0f4; min-height:100vh; overflow-x:hidden; overflow-y:auto;
     -webkit-font-smoothing: antialiased;
     background: #1a1a2e;
-    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   /* 骨架屏动画 */
@@ -1288,6 +1288,8 @@
       align-items: stretch;
       margin: 0 -16px 14px -16px;
       padding: 10px 16px;
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
     }
     .top-right { width: 100%; }
     .search-container { flex: 1; min-width: 0; }
@@ -1379,7 +1381,7 @@
     .mi-time, .recent-badge, .chip-tag, .search-filter-label { font-size: 13px; }
     .poster-overlay-meta { font-size: 15px; }
     /* ===== iOS HIG 间距 / 圆角 / 触控目标规范 ===== */
-    .main { padding: 0 16px calc(120px + env(safe-area-inset-bottom)); }      /* 16pt 页边距 + 底部 tabbar 安全区 */
+    .main { padding: env(safe-area-inset-top, 0px) 16px calc(120px + env(safe-area-inset-bottom)); }      /* 16pt 页边距 + 底部 tabbar 安全区 */
     .section-title { margin: 24px 0 14px; }                                    /* 分组垂直间距 ~20pt */
     .glass-card { padding: 16px; border-radius: 16px; }                        /* 卡片内边距 16 / 圆角 16pt */
     .health-grid, .lib-stats, .services-grid, .movie-grid, .recent-list { gap: 12px; }
