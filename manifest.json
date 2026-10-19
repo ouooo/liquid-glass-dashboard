@@ -1,0 +1,17 @@
+{
+  "name": "NEXUS 仪表盘",
+  "short_name": "NEXUS",
+  "description": "家庭服务器仪表盘",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "/logo-teal-1.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
