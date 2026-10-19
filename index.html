@@ -5395,14 +5395,17 @@ function openDetail(id) {
               <div>
                 <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px;height:fit-content;">
                   ${d.rating ? (function(){
-                    // 按实际评分比例渲染星级（5星制）：rating/10*5 = 亮星数
+                    // SVG 精确评分条：5颗星，按百分比裁剪
                     var pct = Math.max(0, Math.min(100, (parseFloat(d.rating) / 10) * 100));
-                    return `<div style="text-align:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);position:relative;display:inline-block;width:100%;box-sizing:border-box;">
-                      <div style="position:relative;font-size:22px;letter-spacing:2px;line-height:1;">
-                        <span style="color:rgba(255,255,255,0.18);">★★★★★</span>
-                        <span style="position:absolute;left:0;top:0;overflow:hidden;white-space:nowrap;color:#FFD60A;width:${pct}%;">★★★★★</span>
+                    var starSvg = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+                    return `<div style="text-align:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+                      <div style="position:relative;display:inline-block;height:20px;line-height:0;">
+                        <div style="display:flex;gap:2px;color:rgba(255,255,255,0.18);">${starSvg.repeat(5)}</div>
+                        <div style="position:absolute;top:0;left:0;overflow:hidden;white-space:nowrap;color:#FFD60A;width:${pct}%;">
+                          <div style="display:flex;gap:2px;">${starSvg.repeat(5)}</div>
+                        </div>
                       </div>
-                      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;">${d.rating} / 10</div>
+                      <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;">${d.rating} / 10</div>
                     </div>`;
                   })() : ''}
                   ${metaHtml}
