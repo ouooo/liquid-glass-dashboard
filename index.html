@@ -1705,12 +1705,21 @@
           </div>
         </div>
       </div>
-      <!-- 轮播指示器：移动端在卡片外侧下边，宽屏在右下角 -->
-      <div id="heroDotsWrap" style="position:relative;display:flex;align-items:center;margin:4px 0 12px;">
+      <!-- 轮播指示器：移动端在卡片外侧下边，宽屏用左右箭头 -->
+      <div id="heroDotsWrap" style="position:relative;display:flex;align-items:center;justify-content:center;margin:4px 0 12px;">
+        <button onclick="prevSlide()" style="display:none;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;cursor:pointer;font-size:16px;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(10px);">‹</button>
         <div id="heroDotsFadeL" style="position:absolute;left:0;top:0;bottom:0;width:24px;background:linear-gradient(90deg, rgba(0,0,0,0.35), transparent);pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:2;"></div>
-        <div id="heroDots" style="display:flex;gap:5px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:8px 24px;flex:1;-webkit-overflow-scrolling:touch;"></div>
+        <div id="heroDots" style="display:flex;gap:5px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:8px 24px;flex:1;justify-content:center;-webkit-overflow-scrolling:touch;"></div>
         <div id="heroDotsFadeR" style="position:absolute;right:0;top:0;bottom:0;width:24px;background:linear-gradient(-90deg, rgba(0,0,0,0.35), transparent);pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:2;"></div>
+        <button onclick="nextSlide()" style="display:none;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;cursor:pointer;font-size:16px;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(10px);">›</button>
       </div>
+      <style>
+        @media (min-width: 768px) {
+          #heroDotsWrap button { display:flex !important; }
+          #heroDots { display:none !important; }
+          #heroDotsFadeL, #heroDotsFadeR { display:none !important; }
+        }
+      </style>
 
       <!-- 系统状态 五卡片 -->
       <div class="ov-col ov-col-health">
