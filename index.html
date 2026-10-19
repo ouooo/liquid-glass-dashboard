@@ -1682,6 +1682,8 @@
       <div class="overview-grid">
       <!-- Hero 轮播卡片 -->
       <div class="glass-card hero-media full" id="heroCarousel">
+        <button class="hero-arrow hero-arrow-left" onclick="prevSlide()">‹</button>
+        <button class="hero-arrow hero-arrow-right" onclick="nextSlide()">›</button>
         <button id="heroSourceSwitch" title="切换轮播源" style="position:absolute;top:16px;left:16px;z-index:10;display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:16px;border:1px solid rgba(255,255,255,0.18);background:rgba(0,0,0,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:#fff;font-size:12px;font-weight:600;cursor:pointer;">
           <span style="width:6px;height:6px;border-radius:50%;background:#30D158;"></span>
           <span id="heroSourceLabel">最近入库</span>
@@ -1705,19 +1707,29 @@
           </div>
         </div>
       </div>
-      <!-- 轮播指示器：移动端在卡片外侧下边，宽屏用左右箭头 -->
+      <!-- 轮播指示器：移动端在卡片外侧下边，宽屏用左右箭头（hover显示） -->
       <div id="heroDotsWrap" style="position:relative;display:flex;align-items:center;justify-content:center;margin:4px 0 12px;">
-        <button onclick="prevSlide()" style="display:none;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;cursor:pointer;font-size:16px;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(10px);">‹</button>
         <div id="heroDotsFadeL" style="position:absolute;left:0;top:0;bottom:0;width:24px;background:linear-gradient(90deg, rgba(0,0,0,0.35), transparent);pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:2;"></div>
         <div id="heroDots" style="display:flex;gap:5px;align-items:center;overflow-x:auto;scrollbar-width:none;padding:8px 24px;flex:1;justify-content:center;-webkit-overflow-scrolling:touch;"></div>
         <div id="heroDotsFadeR" style="position:absolute;right:0;top:0;bottom:0;width:24px;background:linear-gradient(-90deg, rgba(0,0,0,0.35), transparent);pointer-events:none;opacity:0;transition:opacity 0.2s;z-index:2;"></div>
-        <button onclick="nextSlide()" style="display:none;width:32px;height:32px;border-radius:50%;border:none;background:rgba(255,255,255,0.15);color:#fff;cursor:pointer;font-size:16px;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(10px);">›</button>
       </div>
       <style>
         @media (min-width: 768px) {
-          #heroDotsWrap button { display:flex !important; }
-          #heroDots { display:none !important; }
-          #heroDotsFadeL, #heroDotsFadeR { display:none !important; }
+          #heroDotsWrap { display:none !important; }
+        }
+        .hero-arrow {
+          position:absolute; top:50%; transform:translateY(-50%);
+          width:40px; height:40px; border-radius:50%; border:none;
+          background:rgba(0,0,0,0.4); color:#fff; cursor:pointer;
+          font-size:20px; display:flex; align-items:center; justify-content:center;
+          opacity:0; transition:opacity 0.2s; z-index:16;
+          backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+        }
+        .hero-arrow-left { left:16px; }
+        .hero-arrow-right { right:16px; }
+        #heroCarousel:hover .hero-arrow { opacity:1; }
+        @media (max-width: 767px) {
+          .hero-arrow { display:none !important; }
         }
       </style>
 
